@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SearchAlgoritmParser;
+using SearchAlgoritmParser.DFA;
 using SearchAlgoritmParser.RegularExpression;
+
 
 namespace Test_applicatie
 {
@@ -12,7 +14,7 @@ namespace Test_applicatie
     {
         static void Main(string[] args)
         {
-           /* DFA<String, char>[] exercises = new DFA<string, char>[] { Exercise.Exercise1(), Exercise.Exercise2(), Exercise.Exercise3(), Exercise.Exercise4() };
+            /*DFA<String, char>[] exercises = new DFA<string, char>[] { Exercise.Exercise1(), Exercise.Exercise2(), Exercise.Exercise3(), Exercise.Exercise4() };
 
             char s = ' ';
             int exerciseId = -1;

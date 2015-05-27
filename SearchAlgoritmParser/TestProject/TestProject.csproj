@@ -49,7 +49,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FormeleMethoden\SerachAlgoritmParser.csproj">
+    <ProjectReference Include="..\SearchAlgoritmParser\SearchAlgoritmParser.csproj">
       <Project>{4480a644-f3f2-4f89-bdbf-3249943372f7}</Project>
       <Name>SerachAlgoritmParser</Name>
     </ProjectReference>

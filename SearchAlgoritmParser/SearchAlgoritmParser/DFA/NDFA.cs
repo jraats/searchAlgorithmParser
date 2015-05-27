@@ -25,9 +25,9 @@ namespace SearchAlgoritmParser.DFA
 
         public override void AddTransition(Transition<T,S> t)
         {
-            if(this.getToStates(t.fromState, t.symbol).Count != 0) {
-                throw new TransitionAlreadyInUseNDFAException();
-            }
+         //   if(this.getToStates(t.fromState, t.symbol).Count != 0) {
+          //      throw new TransitionAlreadyInUseNDFAException();
+           // }
 
             base.AddTransition(t);
         }

@@ -12,6 +12,7 @@ namespace SearchAlgoritmParser.DFA
     {
         void AddTransition(Transition<T,S> t);
         void AddStartState(T t);
+        void SetStartState(T t);
         void AddFinalState(T t);
         bool validate(S[] input);
     }

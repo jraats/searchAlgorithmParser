@@ -9,15 +9,15 @@ namespace SearchAlgoritmParser.DFA
         where T : System.IComparable
         where S : System.IComparable
     {
-        protected HashSet<Transition<T,S>> _transitions;
+        protected Dictionary<T, HashSet<Transition<T,S>>> _transitions;
         protected HashSet<T> _states;
-        protected HashSet<T> _startStates;
+        protected T _startState;
         protected HashSet<T> _finalStates;
         protected HashSet<S> _symbols;
         protected T _currentState;
 
         // Or use a Map structure
-        public HashSet<Transition<T,S>> transitions {
+        public Dictionary<T, HashSet<Transition<T,S>>> transitions {
             get
             {
                 return this._transitions;
@@ -31,10 +31,10 @@ namespace SearchAlgoritmParser.DFA
             }
         }
 
-        public HashSet<T> startStates {
+        public T startState {
             get
             {
-                return this._startStates;
+                return this._startState;
             }
         }
 
@@ -70,9 +70,8 @@ namespace SearchAlgoritmParser.DFA
 
         public DFA(HashSet<S> symbols)
         {
-            this._transitions = new HashSet<Transition<T,S>>();
+            this._transitions = new Dictionary<T, HashSet<Transition<T, S>>>();
             this._states = new HashSet<T>();
-            this._startStates = new HashSet<T>();
             this._finalStates = new HashSet<T>();
             this._symbols = symbols;
             this._currentState = default(T);
@@ -80,7 +79,10 @@ namespace SearchAlgoritmParser.DFA
     
         public virtual void AddTransition(Transition<T,S> t)
         {
-            _transitions.Add(t);
+            if(!_transitions.ContainsKey(t.fromState)) {
+                _transitions.Add(t.fromState, new HashSet<Transition<T, S>>());
+            }
+            _transitions[t.fromState].Add(t);
             _states.Add(t.fromState);
             _states.Add(t.toState);        
         }
@@ -89,7 +91,7 @@ namespace SearchAlgoritmParser.DFA
         {
             // if already in states no problem because a Set will remove duplicates.
             _states.Add(t);
-            _startStates.Add(t);
+            _startState = t;
 
             if (this.currentState == null)
                 this._currentState = t;
@@ -97,10 +99,7 @@ namespace SearchAlgoritmParser.DFA
 
         public void SetStartState(T t)
         {
-            if (this.startStates.Contains(t))
-            {
-                this._currentState = t;
-            }
+
         }
 
         public void AddFinalState(T t)
@@ -113,9 +112,10 @@ namespace SearchAlgoritmParser.DFA
         public void printTransitions()
         {
 
-            foreach (Transition<T,S> t in transitions)
+            foreach (HashSet<Transition<T,S>> t in transitions.Values)
             {
-                Console.WriteLine(t);
+                foreach(Transition<T,S> p in t)
+                    Console.WriteLine(p);
             }
         }
 
@@ -174,53 +174,31 @@ namespace SearchAlgoritmParser.DFA
 
             for (int i = 0; i < input.Length; i++)
             {
-                HashSet<T> options = this.getToStates(state, input[i]);
-                if (options.Count > 1)
-                {
-                    //Don't know how to handle multiple options
-                    throw new Exception();
-                }
-
-                //No transitions available. Input invalid
-                if (options.Count == 0)
-                    return false;
-
-                HashSet<T>.Enumerator e = options.GetEnumerator();
-                e.MoveNext();
-                state = e.Current;
+                state = this.getToState(state, input[i]);
             }
 
             return this.finalStates.Contains(state);
         }
     
-        public HashSet<T> getToStates(T from, S symbol)
+        public T getToState(T from, S symbol)
         {
-           HashSet<T> reachable = new HashSet<T>();
-           foreach (Transition<T,S> transaction in transitions)
-           {
-               if (transaction.fromState.Equals(from) && transaction.symbol.Equals(symbol))
-               {
-                   reachable.Add(transaction.toState);
-               }
-           }
+            if (!transitions.ContainsKey(from))
+                return default(T);
 
-           return reachable;
-        
+            foreach(Transition<T,S> s in transitions[from])
+            {
+                if(s.symbol.Equals(symbol))
+                       return s.toState;
+            }
+            return default(T);
         }
 
         public HashSet<Transition<T,S>> getStates(T from)
         {
-            HashSet<Transition<T,S>> reachable = new HashSet<Transition<T,S>>();
-            foreach (Transition<T, S> transaction in transitions)
-            {
-                if (transaction.fromState.Equals(from))
-                {
-                    reachable.Add(transaction);
-                }
-            }
+            if (!transitions.ContainsKey(from))
+                return null;
 
-            return reachable;
-
+            return transitions[from];
         }
 
         public void MakeDotFile(String output)
@@ -240,8 +218,9 @@ namespace SearchAlgoritmParser.DFA
 
             streamWriter.WriteLine();
             streamWriter.WriteLine("node [shape = circle];");
-            foreach(Transition<T,S> transition in this.transitions) {
-                streamWriter.WriteLine(transition.fromState.ToString() + " -> " + transition.toState.ToString() + " [ label= \"" + transition.symbol.ToString() + "\" ];");
+            foreach(HashSet<Transition<T,S>> transition in this.transitions.Values) {
+                foreach(Transition<T,S> t in transition)
+                    streamWriter.WriteLine(t.fromState.ToString() + " -> " + t.toState.ToString() + " [ label= \"" + t.symbol.ToString() + "\" ];");
             }
 	        streamWriter.WriteLine("}");
             streamWriter.Close();

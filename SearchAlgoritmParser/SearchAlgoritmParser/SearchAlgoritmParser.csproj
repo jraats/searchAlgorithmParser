@@ -45,6 +45,7 @@
     <Compile Include="Language.cs" />
     <Compile Include="DFA\NDFA.cs" />
     <Compile Include="DFA\NoStateDFAException.cs" />
+    <Compile Include="RegularExpression\RegularExpression.cs" />
     <Compile Include="RegularExpression\RegularExpressionChoice.cs" />
     <Compile Include="RegularExpression\RegularExpressionConcat.cs" />
     <Compile Include="RegularExpression\RegularExpressionEmpty.cs" />
