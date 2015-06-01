@@ -15,7 +15,7 @@ namespace SearchAlgorithmParser
             this.EndStates = new HashSet<T>();
         }
 
-        public abstract bool Validate(T[] toBeVerified);
+        public abstract bool Validate(S[] toBeVerified);
         public abstract Language<S> GetLanguage(int length);
         public abstract bool IsMachineValid();
 

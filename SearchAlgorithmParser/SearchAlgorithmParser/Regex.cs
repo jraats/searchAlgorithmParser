@@ -27,7 +27,7 @@ namespace SearchAlgorithmParser
             this.StartStates.Add(state);
         }
 
-        public override bool Validate(T[] toBeVerified)
+        public override bool Validate(S[] toBeVerified)
         {
             return false;
         }
