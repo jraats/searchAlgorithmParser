@@ -98,7 +98,7 @@ namespace SearchAlgorithmParser
                 T newState = toStates[key];
                 List<S> newSymbols = new List<S>(symbols);
                 newSymbols.Add(key);
-                this.GetLanguage(length - 1, symbols, newState, lang);
+                this.GetLanguage(length - 1, newSymbols, newState, lang);
             }
         }
 

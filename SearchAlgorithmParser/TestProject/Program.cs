@@ -47,6 +47,12 @@ namespace Test_applicatie
             Console.WriteLine(d.Validate("abbabba".ToArray()));
             Console.WriteLine(d.Validate("bbabaab".ToArray()));
             Console.WriteLine(d.Validate("aaaaabba".ToArray()));
+
+            Language<char> lang = d.GetLanguage(5);
+            foreach (char[] word in lang.Words)
+            {
+                Console.WriteLine(word);
+            }
         }
     }
 }
