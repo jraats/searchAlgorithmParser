@@ -53,6 +53,25 @@ namespace Test_applicatie
             {
                 Console.WriteLine(word);
             }
+
+            NDFA<String, char> ndfa = new NDFA<string, char>();
+            HashSet<char> alphabet = new HashSet<char>();
+            alphabet.Add('b');
+            alphabet.Add('a');
+            ndfa.SetAlphabet(alphabet);
+            ndfa.SetStartState("LR_0");
+            ndfa.SetStartState("LR_2");
+            ndfa.AddTransition("LR_0", 'a', "LR_1");
+            ndfa.AddTransition("LR_0", 'b', "LR_2");
+            ndfa.AddTransition("LR_1", 'a', "LR_4");
+            ndfa.AddTransition("LR_1", 'a', "LR_2");
+            ndfa.AddTransition("LR_2", 'b', "LR_1");
+            ndfa.AddTransition("LR_2", 'a', "LR_3");
+            ndfa.AddTransition("LR_3", 'b', "LR_4");
+            ndfa.AddTransition("LR_4", 'a', "LR_5");
+            ndfa.AddFinalState("LR_3");
+            ndfa.AddFinalState("LR_5");
+            ndfa.IsMachineValid();
         }
     }
 }

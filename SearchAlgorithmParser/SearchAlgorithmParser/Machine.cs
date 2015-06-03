@@ -27,9 +27,14 @@ namespace SearchAlgorithmParser
             this.StartState = state;
         }
 
-        public void AddFinalState(T state)
+        public virtual void AddFinalState(T state)
         {
-            EndStates.Add(state);
+            this.EndStates.Add(state);
+        }
+
+        public void SetAlphabet(HashSet<S> newAlphabet)
+        {
+            Alphabet = newAlphabet;
         }
 
         public void ConvertTo() {
