@@ -11,8 +11,11 @@ namespace SearchAlgorithmParser
         public HashSet<T> EndStates { private set; get; }
         public T StartState {private set; get; }
 
+        public HashSet<S> Alphabet;
+
         public Machine() {
             this.EndStates = new HashSet<T>();
+            this.Alphabet = new HashSet<S>();
         }
 
         public abstract bool Validate(S[] toBeVerified);

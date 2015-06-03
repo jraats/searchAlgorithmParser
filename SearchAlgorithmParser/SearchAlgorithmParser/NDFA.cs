@@ -27,6 +27,11 @@ namespace SearchAlgorithmParser
             this.StartStates.Add(state);
         }
 
+        public void AddTransition(T from, Dictionary<S, List<T>> to)
+        {
+            this.states.Add(from, to);
+        }
+
         public override bool Validate(S[] toBeVerified)
         {
             return false;
