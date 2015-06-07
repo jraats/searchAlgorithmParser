@@ -8,6 +8,7 @@ namespace SearchAlgorithmParser
 {
     public class Converter<T, S>
     {
+        //DFA --> NDFA
         public static NDFA<T, S> ConvertToNDFA(DFA<T, S> dfa)
         {
             NDFA<T, S> ndfa = new NDFA<T, S>();
@@ -28,13 +29,48 @@ namespace SearchAlgorithmParser
             return ndfa;
         }
 
+        //Regram --> NDFA
+        public static NDFA<T, S> ConvertToNDFA(Regram<T, S> ndfa)
+        {
+            return null;
+        }
+
+        //Regex --> NDFA
+        public static Regex<T, S> ConvertToNDFA(Regex<T, S> regex)
+        {
+            return null;
+        }
+
+        //DFA --> Regram
+        public static Regram<T, S> ConvertToRegram(DFA<T, S> dfa)
+        {
+            return null;
+        }
+
+        //NDFA --> Regram
+        public static Regram<T, S> ConvertToRegram(NDFA<T, S> ndfa)
+        {
+            return null;
+        }
+
+        //NDFA --> DFA
         public static DFA<MultiState<T>, S> ConvertToDFA(NDFA<T, S> ndfa, IMultiStateView<T> view)
+        {
+            return Converter<T, S>.GrammarConvertToDFA(ndfa, new MultiState<T>(ndfa.StartStates, view), view);
+        }
+
+
+        //Regram --> DFA
+        public static DFA<MultiState<T>, S> ConvertToDFA(Regram<T, S> regram, IMultiStateView<T> view)
+        {
+            return Converter<T, S>.GrammarConvertToDFA(regram, new MultiState<T>(new T[]{ regram.StartState }, view), view);
+        }
+
+        private static DFA<MultiState<T>, S> GrammarConvertToDFA(Grammar<T, S> grammar, MultiState<T> startState, IMultiStateView<T> view)
         {
             DFA<MultiState<T>, S> dfa = new DFA<MultiState<T>, S>();
             HashSet<MultiState<T>> todo = new HashSet<MultiState<T>>();
             HashSet<MultiState<T>> done = new HashSet<MultiState<T>>();
-            //Add the start states to the todo list
-            MultiState<T> startState = new MultiState<T>(ndfa.StartStates, view);
             todo.Add(startState);
 
             //While there are items that needs to be progressed
@@ -42,13 +78,13 @@ namespace SearchAlgorithmParser
             {
                 MultiState<T> from = todo.First<MultiState<T>>();
 
-                Dictionary<S, MultiState<T>> states = new Dictionary<S,MultiState<T>>();
+                Dictionary<S, MultiState<T>> states = new Dictionary<S, MultiState<T>>();
 
                 foreach (T part in from)
                 {
-                    Dictionary<S, List<T>> partStates = ndfa.GetStates(part);
-                    
-                    foreach (S symbol in ndfa.Alphabet)
+                    Dictionary<S, List<T>> partStates = grammar.GetStates(part);
+
+                    foreach (S symbol in grammar.Alphabet)
                     {
                         if (!states.ContainsKey(symbol))
                         {
@@ -58,7 +94,8 @@ namespace SearchAlgorithmParser
                         if (partStates.ContainsKey(symbol))
                         {
                             List<T> partToStates = partStates[symbol];
-                            foreach(T partToState in partToStates) {
+                            foreach (T partToState in partToStates)
+                            {
                                 states[symbol].Add(partToState);
                             }
                         }
@@ -66,7 +103,7 @@ namespace SearchAlgorithmParser
                     }
                 }
 
-                foreach(S symbol in ndfa.Alphabet)
+                foreach (S symbol in grammar.Alphabet)
                 {
                     dfa.AddTransition(from, states[symbol], symbol);
                     if (!done.Contains(states[symbol]))
@@ -76,7 +113,7 @@ namespace SearchAlgorithmParser
                         {
                             //Add fail state
                             done.Add(states[symbol]);
-                            foreach (S s in ndfa.Alphabet)
+                            foreach (S s in grammar.Alphabet)
                             {
                                 dfa.AddTransition(states[symbol], s);
                             }
@@ -89,11 +126,6 @@ namespace SearchAlgorithmParser
                             }
                         }
                     }
-                    else
-                    {
-                        
-                    }
-
                 }
 
                 todo.Remove(from);
@@ -104,7 +136,7 @@ namespace SearchAlgorithmParser
             {
                 foreach (T partState in state)
                 {
-                    if (ndfa.EndStates.Contains(partState))
+                    if (grammar.EndStates.Contains(partState))
                     {
                         dfa.EndStates.Add(state);
                     }
@@ -112,13 +144,6 @@ namespace SearchAlgorithmParser
             }
             dfa.SetStartState(startState);
 
-
-            return dfa;
-        }
-
-        public static DFA<T, S> ConvertToDFA(Regram<T, S> regram)
-        {
-            DFA<T, S> dfa = new DFA<T, S>();
 
             return dfa;
         }
