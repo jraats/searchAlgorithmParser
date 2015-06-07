@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,10 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter.cs" />
     <Compile Include="DFA.cs" />
     <Compile Include="Grammar.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Machine.cs" />
+    <Compile Include="MultiState.cs" />
+    <Compile Include="IMultiStateView.cs" />
+    <Compile Include="MultiStateViewConcat.cs" />
     <Compile Include="NDFA.cs" />
     <Compile Include="NoBeginStateException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

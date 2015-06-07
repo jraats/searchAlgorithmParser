@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SearchAlgorithmParser
 {
-    public abstract class Machine<T,S>
+    public abstract class Machine<T, S>
     {
         public HashSet<T> EndStates { private set; get; }
         public T StartState {private set; get; }
@@ -21,6 +21,7 @@ namespace SearchAlgorithmParser
         public abstract bool Validate(S[] toBeVerified);
         public abstract Language<S> GetLanguage(int length);
         public abstract bool IsMachineValid();
+        public abstract HashSet<T> GetStates();
 
         public virtual void SetStartState(T state)
         {

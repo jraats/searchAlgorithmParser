@@ -107,6 +107,19 @@ namespace SearchAlgorithmParser
             return true;
         }
 
+        public override HashSet<T> GetStates()
+        {
+            return new HashSet<T>(this.states.Keys);
+        }
+
+        public Dictionary<S, T> GetStates(T state)
+        {
+            if (!this.states.ContainsKey(state))
+                return null;
+
+            return this.states[state];
+        }
+
         public void MakeDotFile(String output)
         {
             FileStream fileStream =
@@ -118,7 +131,7 @@ namespace SearchAlgorithmParser
             streamWriter.WriteLine("node [shape = doublecircle];");
             foreach (T state in this.EndStates)
             {
-                streamWriter.Write(" " + state.ToString());
+                streamWriter.Write(" \"" + state.ToString() + "\"");
             }
             if (this.EndStates.Count > 0)
                 streamWriter.Write(';');
@@ -130,7 +143,7 @@ namespace SearchAlgorithmParser
                 Dictionary<S, T> newState = this.states[fromState];
                 foreach (S symbol in newState.Keys)
                 {
-                    streamWriter.WriteLine(fromState.ToString() + " -> " + newState[symbol].ToString() + " [ label= \"" + symbol.ToString() + "\" ];");
+                    streamWriter.WriteLine("\"" + fromState.ToString() + "\" -> \"" + newState[symbol].ToString() + "\" [ label= \"" + symbol.ToString() + "\" ];");
                 }
             }
             streamWriter.WriteLine("}");

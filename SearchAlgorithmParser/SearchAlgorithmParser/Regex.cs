@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SearchAlgorithmParser
 {
-    public class Regex<T,S> : Grammar<T,S>
+    public class Regex<T, S> : Grammar<T, S>
     {
         public HashSet<T> StartStates;
 
