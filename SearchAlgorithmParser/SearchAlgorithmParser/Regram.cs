@@ -19,7 +19,7 @@ namespace SearchAlgorithmParser
             this.AddTransition(fromto, fromto, symbol);
         }
 
-        public void AddTransition(T from, T to, S symbol)
+        public override void AddTransition(T from, T to, S symbol)
         {
             if (!this.states.ContainsKey(from))
             {

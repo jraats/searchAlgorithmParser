@@ -18,12 +18,7 @@ namespace SearchAlgorithmParser
             this.states = new Dictionary<T, Dictionary<S, T>>();
         }
 
-        public void AddTransition(T fromto, S symbol)
-        {
-            this.AddTransition(fromto, fromto, symbol);
-        }
-
-        public void AddTransition(T from, T to, S symbol)
+        public override void AddTransition(T from, T to, S symbol)
         {
             if (!this.states.ContainsKey(from))
             {

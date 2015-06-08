@@ -29,6 +29,11 @@ namespace SearchAlgorithmParser
             }
         }
 
+        public override void AddTransition(T from, T to, S symbol)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddStartState(T state)
         {
             this.StartStates.Add(state);

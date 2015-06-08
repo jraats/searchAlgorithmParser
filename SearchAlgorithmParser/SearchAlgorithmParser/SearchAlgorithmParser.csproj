@@ -52,6 +52,17 @@
     <Compile Include="NoBeginStateException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regex.cs" />
+    <Compile Include="Regex\iStateCreater.cs" />
+    <Compile Include="Regex\RegularExpressionChoice.cs" />
+    <Compile Include="Regex\RegularExpressionConcat.cs" />
+    <Compile Include="Regex\RegularExpressionEmpty.cs" />
+    <Compile Include="Regex\RegularExpressionFunctional.cs" />
+    <Compile Include="Regex\RegularExpressionLoop.cs" />
+    <Compile Include="Regex\RegularExpressionPart.cs" />
+    <Compile Include="Regex\RegularExpressionPlus.cs" />
+    <Compile Include="Regex\RegularExpressionStar.cs" />
+    <Compile Include="Regex\RegularExpressionTerminal.cs" />
+    <Compile Include="Regex\StringStateCreater.cs" />
     <Compile Include="Regram.cs" />
   </ItemGroup>
   <ItemGroup>

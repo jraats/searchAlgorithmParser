@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SearchAlgorithmParser;
+using SearchAlgorithmParser.Regex;
 
 
 namespace Test_applicatie
@@ -123,7 +124,7 @@ namespace Test_applicatie
             DFA<MultiState<String>, char> dfa = SearchAlgorithmParser.Converter<String, char>.ConvertToDFA(ndfa, new MultiStateViewConcat<String>(" ", "LEEG"));
             dfa.MakePngFile("test.png");*/
 
-            NDFA<String, char> ndfa = new NDFA<string, char>(new char[] { 'a', 'b' });
+/*            NDFA<String, char> ndfa = new NDFA<string, char>(new char[] { 'a', 'b' });
             ndfa.StartState = "LR_0";
             ndfa.StartState = "LR_2";
             ndfa.AddTransition("LR_0", "LR_1", 'a');
@@ -136,7 +137,26 @@ namespace Test_applicatie
             ndfa.AddTransition("LR_4", "LR_5", 'a');
             ndfa.AddEndState("LR_3");
             ndfa.AddEndState("LR_5");
-            ndfa.IsMachineValid();
+            ndfa.IsMachineValid();*/
+
+            RegularExpressionPart<String> p1 = new RegularExpressionStar<String>(new RegularExpressionConcat<String>(new RegularExpressionTerminal<String>('a'), new RegularExpressionTerminal<String>('b')));
+            RegularExpressionPart<String> p2 = new RegularExpressionPlus<String>(new RegularExpressionChoice<String>(new RegularExpressionTerminal<String>('b'), new RegularExpressionTerminal<String>('a')));
+
+            RegularExpressionPart<String> p = new RegularExpressionConcat<String>(p1, p2);
+
+            Console.WriteLine(p);
+
+            String endStr = null;
+            String startState = "LR_S";
+            NDFA<String, char> ndfa = new NDFA<string, char>(new char[]{ 'a', 'b'}, 'e');
+            p.Convert(new StringStateCreater("LR_"), startState, ref endStr, ndfa);
+            ndfa.StartState = startState;
+            ndfa.EndStates.Add(endStr);
+            ndfa.MakePngFile("test.png");
+            
+
+
+            Console.ReadLine();
         }
     }
 }

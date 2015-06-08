@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +13,13 @@ namespace SearchAlgorithmParser
         private string Delta = "'delta.png'";
 
         public HashSet<T> StartStates;
-        public static S Epsilon = default(S);
+        public S Epsilon;
 
-        public NDFA(S[] alphabet)
+        public NDFA(S[] alphabet, S epsilon)
             : base(alphabet)
         {
             this.StartStates = new HashSet<T>();
+            this.Epsilon = epsilon;
         }
 
         public override T StartState
@@ -37,7 +40,7 @@ namespace SearchAlgorithmParser
             this.StartStates.Add(state);
         }
 
-        public void AddTransition(T from, T to, S symbol)
+        public override void AddTransition(T from, T to, S symbol)
         {
             if (!this.states.ContainsKey(from))
             {
@@ -99,6 +102,57 @@ namespace SearchAlgorithmParser
             {
                 this.states.Add(state, new Dictionary<S, List<T>>());
             }
+        }
+
+        public void MakeDotFile(String output)
+        {
+            FileStream fileStream =
+                new FileStream(output, FileMode.Create, FileAccess.Write);
+            StreamWriter streamWriter = new StreamWriter(fileStream);
+            streamWriter.WriteLine(@"digraph finite_state_machine {");
+            streamWriter.WriteLine("rankdir=LR;");
+            streamWriter.WriteLine("size=\"8,5\"");
+            streamWriter.WriteLine("node [shape = doublecircle];");
+            foreach (T state in this.EndStates)
+            {
+                streamWriter.Write(" \"" + state.ToString() + "\"");
+            }
+            if (this.EndStates.Count > 0)
+                streamWriter.Write(';');
+
+            streamWriter.WriteLine();
+            streamWriter.WriteLine("node [shape = circle];");
+            foreach (T fromState in this.states.Keys)
+            {
+                Dictionary<S, List<T>> newState = this.states[fromState];
+                foreach (S symbol in newState.Keys)
+                {
+                    foreach(T otherState in newState[symbol])
+                        streamWriter.WriteLine("\"" + fromState.ToString() + "\" -> \"" + otherState.ToString() + "\" [ label= \"" + symbol.ToString() + "\" ];");
+                }
+            }
+            streamWriter.WriteLine("}");
+            streamWriter.Close();
+            fileStream.Close();
+        }
+
+        public void MakePngFile(String output)
+        {
+            MakeDotFile("temp.dot");
+            Process process = new Process();
+            process.StartInfo =
+            new ProcessStartInfo(@".\libdata\dot.exe",
+                "-Tpng .\\temp.dot -o \"" + output + "\"");
+            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            process.Start();
+            process.WaitForExit();
+            RemoveDotFile("temp.dot");
+
+        }
+
+        private void RemoveDotFile(String file)
+        {
+            File.Delete(file);
         }
 
         public override string ToString()

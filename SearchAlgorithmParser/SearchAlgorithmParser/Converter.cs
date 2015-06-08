@@ -9,9 +9,9 @@ namespace SearchAlgorithmParser
     public class Converter<T, S>
     {
         //DFA --> NDFA
-        public static NDFA<T, S> ConvertToNDFA(DFA<T, S> dfa)
+        public static NDFA<T, S> ConvertToNDFA(DFA<T, S> dfa, S epsilon)
         {
-            NDFA<T, S> ndfa = new NDFA<T, S>(dfa.Alphabet);
+            NDFA<T, S> ndfa = new NDFA<T, S>(dfa.Alphabet, epsilon);
 
             foreach (T fromState in dfa.GetStates()) {
                 Dictionary<S, T> states = dfa.GetStates(fromState);

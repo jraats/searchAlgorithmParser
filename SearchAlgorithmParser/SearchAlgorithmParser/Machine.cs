@@ -22,5 +22,11 @@ namespace SearchAlgorithmParser
         public abstract Language<S> GetLanguage(int length);
         public abstract bool IsMachineValid();
         public abstract HashSet<T> GetStates();
+
+        public abstract void AddTransition(T from, T to, S symbol);
+        public void AddTransition(T fromto, S symbol)
+        {
+            this.AddTransition(fromto, fromto, symbol);
+        }
     }
 }
