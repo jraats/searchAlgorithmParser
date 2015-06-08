@@ -94,8 +94,8 @@ namespace Test_applicatie
                 Console.WriteLine(word);
             }*/
 
-            NDFA<String, char> ndfa = new NDFA<string, char>();
-            ndfa.Alphabet = new HashSet<char>();
+            /*NDFA<String, char> ndfa = new NDFA<string, char>();
+            ndfa.Alphabet. = new HashSet<char>();
             ndfa.Alphabet.Add('a');
             ndfa.Alphabet.Add('b');
             ndfa.AddTransition("1", "3", 'a');
@@ -124,9 +124,9 @@ namespace Test_applicatie
 
 
             DFA<MultiState<String>, char> dfa = SearchAlgorithmParser.Converter<String, char>.ConvertToDFA(ndfa, new MultiStateViewConcat<String>(" ", "LEEG"));
-            dfa.MakePngFile("test.png");
+            dfa.MakePngFile("test.png");*/
 
-            /*NDFA<String, char> ndfa = new NDFA<string, char>();
+            NDFA<String, char> ndfa = new NDFA<string, char>();
             HashSet<char> alphabet = new HashSet<char>();
             alphabet.Add('b');
             alphabet.Add('a');
@@ -143,7 +143,7 @@ namespace Test_applicatie
             ndfa.AddTransition("LR_4", "LR_5", 'a');
             ndfa.AddFinalState("LR_3");
             ndfa.AddFinalState("LR_5");
-            ndfa.IsMachineValid();*/
+            ndfa.IsMachineValid();
         }
     }
 }
