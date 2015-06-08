@@ -11,7 +11,7 @@ namespace SearchAlgorithmParser
         private string Delta = "'delta.png'";
 
         public HashSet<T> StartStates;
-        public static char Epsilon = '$';
+        public static S Epsilon = default(S);
 
         public NDFA(S[] alphabet)
             : base(alphabet)
@@ -66,14 +66,14 @@ namespace SearchAlgorithmParser
 
         public override bool IsMachineValid()
         {
-            if (base.StartState != null && base.states.Count > 0 && base.Alphabet.Length > 0 && base.EndStates.Count > 0 && StartStates.Count > 0)
+            if (this.StartState != null && this.states.Count > 0 && this.Alphabet.Length > 0 && this.EndStates.Count > 0 && StartStates.Count > 0)
             {
                 // check if symbols are part of alphabet
-                foreach(T fromState in base.states.Keys)
+                foreach(T fromState in this.states.Keys)
                 {
-                    foreach(S symbol in base.states[fromState].Keys)
+                    foreach(S symbol in this.states[fromState].Keys)
                     {
-                        if (!base.Alphabet.Contains(symbol))
+                        if (!this.Alphabet.Contains(symbol))
                         {
                             Console.WriteLine("NDFA not valid: Symbol not found in alphabet.");
                             return false;
@@ -91,14 +91,24 @@ namespace SearchAlgorithmParser
             }
         }
 
+        public void AddEndState(T state)
+        {
+            this.EndStates.Add(state);
+
+            if (!this.states.ContainsKey(state))
+            {
+                this.states.Add(state, new Dictionary<S, List<T>>());
+            }
+        }
+
         public override string ToString()
         {
             StringBuilder ndfaString = new StringBuilder();
             ndfaString.Append("M = ({");
 
-            foreach (T state in base.states.Keys)
+            foreach (T state in this.states.Keys)
             {
-                if (!base.states[state].Equals(base.states.Last().Value))
+                if (!this.states[state].Equals(this.states.Last().Value))
                 {
                     ndfaString.Append(state + ", ");
                 }
@@ -108,9 +118,9 @@ namespace SearchAlgorithmParser
                 }
             }
 
-            foreach(S character in base.Alphabet)
+            foreach(S character in this.Alphabet)
             {
-                if(!character.Equals(Alphabet.Last()))
+                if(!character.Equals(this.Alphabet.Last()))
                 {
                     ndfaString.Append(character + ", ");
                 }
@@ -134,9 +144,9 @@ namespace SearchAlgorithmParser
                 }
             }
 
-            foreach (T endState in EndStates)
+            foreach (T endState in this.EndStates)
             {
-                if (!endState.Equals(EndStates.Last()))
+                if (!endState.Equals(this.EndStates.Last()))
                 {
                     ndfaString.Append(endState + ", ");
                 }
