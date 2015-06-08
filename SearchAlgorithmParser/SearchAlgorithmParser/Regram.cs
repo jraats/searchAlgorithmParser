@@ -37,13 +37,13 @@ namespace SearchAlgorithmParser
 
         public override bool Validate(S[] toBeVerified)
         {
-            DFA<T, S> dfa = Converter<T, S>.ConvertToDFA(this);
+            DFA<MultiState<T>, S> dfa = Converter<T, S>.ConvertToDFA(this, new MultiStateViewConcat<T>("", "_"));
             return dfa.Validate(toBeVerified);
         }
 
         public override Language<S> GetLanguage(int length)
         {
-            DFA<T, S> dfa = Converter<T, S>.ConvertToDFA(this);
+            DFA<MultiState<T>, S> dfa = Converter<T, S>.ConvertToDFA(this, new MultiStateViewConcat<T>("", "_"));
             return dfa.GetLanguage(length);
         }
 
