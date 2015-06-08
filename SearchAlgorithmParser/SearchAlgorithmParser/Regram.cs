@@ -9,8 +9,8 @@ namespace SearchAlgorithmParser
     public class Regram<T, S> : Grammar<T, S>
     {
 
-        public Regram()
-            : base()
+        public Regram(S[] alphabet)
+            : base(alphabet)
         {
         }
 

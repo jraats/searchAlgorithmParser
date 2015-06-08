@@ -13,16 +13,23 @@ namespace SearchAlgorithmParser
         public HashSet<T> StartStates;
         public static char Epsilon = '$';
 
-        public NDFA()
-            : base()
+        public NDFA(S[] alphabet)
+            : base(alphabet)
         {
             this.StartStates = new HashSet<T>();
         }
 
-        public override void SetStartState(T state)
+        public override T StartState
         {
-            this.StartStates.Add(state);
-            base.SetStartState(state);
+            get
+            {
+                return base.StartState;
+            }
+            set
+            {
+                this.StartStates.Add(value);
+                base.StartState = value;
+            }
         }
 
         public void AddStartState(T state)
@@ -59,7 +66,7 @@ namespace SearchAlgorithmParser
 
         public override bool IsMachineValid()
         {
-            if (base.StartState != null && base.states.Count > 0 && base.Alphabet.Count > 0 && base.EndStates.Count > 0 && StartStates.Count > 0)
+            if (base.StartState != null && base.states.Count > 0 && base.Alphabet.Length > 0 && base.EndStates.Count > 0 && StartStates.Count > 0)
             {
                 // check if symbols are part of alphabet
                 foreach(T fromState in base.states.Keys)
@@ -81,16 +88,6 @@ namespace SearchAlgorithmParser
             {
                 Console.WriteLine("NDFA not valid: missing criticals.");
                 return false;
-            }
-        }
-
-        public override void AddFinalState(T state)
-        {
-            base.AddFinalState(state);
-
-            if (!this.states.ContainsKey(state))
-            {
-                this.states.Add(state, new Dictionary<S, List<T>>());
             }
         }
 

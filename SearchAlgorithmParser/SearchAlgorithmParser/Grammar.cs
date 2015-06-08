@@ -10,7 +10,8 @@ namespace SearchAlgorithmParser
     {
         protected Dictionary<T, Dictionary<S, List<T>>> states;
 
-        public Grammar() : base()
+        public Grammar(S[] alphabet)
+            : base(alphabet)
         {
             this.states = new Dictionary<T, Dictionary<S, List<T>>>();
         }

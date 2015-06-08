@@ -36,7 +36,7 @@ namespace Test_applicatie
             d.AddTransition("LR_10", "LR_10", 'a');
             d.AddTransition("LR_10", "LR_10", 'b');
 
-            d.SetStartState("LR_0");
+            d.StartState = "LR_0";
             d.AddFinalState("LR_3");
             d.AddFinalState("LR_7");
 
@@ -78,7 +78,7 @@ namespace Test_applicatie
             gram.AddTransition("LR_10", "LR_10", 'a');
             gram.AddTransition("LR_10", "LR_10", 'b');
 
-            gram.SetStartState("LR_0");
+            gram.StartState = "LR_0";
             gram.AddFinalState("LR_3");
             gram.AddFinalState("LR_7");
 
@@ -94,10 +94,7 @@ namespace Test_applicatie
                 Console.WriteLine(word);
             }*/
 
-            NDFA<String, char> ndfa = new NDFA<string, char>();
-            ndfa.Alphabet = new HashSet<char>();
-            ndfa.Alphabet.Add('a');
-            ndfa.Alphabet.Add('b');
+            NDFA<String, char> ndfa = new NDFA<string, char>(new char[]{ 'a', 'b' });
             ndfa.AddTransition("1", "3", 'a');
             ndfa.AddTransition("1", "2", 'b');
             ndfa.AddTransition("2", "3", 'b');
@@ -115,9 +112,9 @@ namespace Test_applicatie
             ndfa.AddTransition("10", "9", 'a');
             ndfa.AddTransition("10", "9", 'b');
 
-            ndfa.AddFinalState("7");
-            ndfa.AddFinalState("9");
-            ndfa.SetStartState("1");
+            ndfa.EndStates.Add("7");
+            ndfa.EndStates.Add("9");
+            ndfa.StartState = "1";
 
             Console.WriteLine(ndfa.Validate("bbba".ToArray()));
             Console.WriteLine(ndfa.Validate("aabb".ToArray()));
@@ -131,8 +128,8 @@ namespace Test_applicatie
             alphabet.Add('b');
             alphabet.Add('a');
             ndfa.SetAlphabet(alphabet);
-            ndfa.SetStartState("LR_0");
-            ndfa.SetStartState("LR_2");
+            ndfa.StartState = "LR_0";
+            ndfa.StartState = "LR_2";
             ndfa.AddTransition("LR_0", "LR_1", 'a');
             ndfa.AddTransition("LR_0", "LR_2", 'b');
             ndfa.AddTransition("LR_1", "LR_4", 'a');

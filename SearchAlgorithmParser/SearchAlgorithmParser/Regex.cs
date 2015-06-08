@@ -10,16 +10,23 @@ namespace SearchAlgorithmParser
     {
         public HashSet<T> StartStates;
 
-        public Regex()
-            : base()
+        public Regex(S[] alphabet)
+            : base(alphabet)
         {
             this.StartStates = new HashSet<T>();
         }
 
-        public override void SetStartState(T state)
+        public override T StartState
         {
-            this.StartStates.Add(state);
-            base.SetStartState(state);
+            get
+            {
+                return base.StartState;
+            }
+            set
+            {
+                this.StartStates.Add(value);
+                base.StartState = value;
+            }
         }
 
         public void AddStartState(T state)

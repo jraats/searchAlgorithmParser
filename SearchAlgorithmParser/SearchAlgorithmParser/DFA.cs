@@ -12,8 +12,8 @@ namespace SearchAlgorithmParser
     {
         private Dictionary<T, Dictionary<S, T>> states;
 
-        public DFA()
-            : base()
+        public DFA(S[] alphabet)
+            : base(alphabet)
         {
             this.states = new Dictionary<T, Dictionary<S, T>>();
         }

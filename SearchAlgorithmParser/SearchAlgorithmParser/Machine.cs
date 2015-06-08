@@ -9,37 +9,18 @@ namespace SearchAlgorithmParser
     public abstract class Machine<T, S>
     {
         public HashSet<T> EndStates { private set; get; }
-        public T StartState {private set; get; }
+        public virtual T StartState { set; get; }
+        public S[] Alphabet { private set; get; }
 
-        public HashSet<S> Alphabet;
-
-        public Machine() {
+        public Machine(S[] alphabet)
+        {
             this.EndStates = new HashSet<T>();
-            this.Alphabet = new HashSet<S>();
+            this.Alphabet = alphabet;
         }
 
         public abstract bool Validate(S[] toBeVerified);
         public abstract Language<S> GetLanguage(int length);
         public abstract bool IsMachineValid();
         public abstract HashSet<T> GetStates();
-
-        public virtual void SetStartState(T state)
-        {
-            this.StartState = state;
-        }
-
-        public virtual void AddFinalState(T state)
-        {
-            this.EndStates.Add(state);
-        }
-
-        public void SetAlphabet(HashSet<S> newAlphabet)
-        {
-            Alphabet = newAlphabet;
-        }
-
-        public void ConvertTo() {
-            //How do we converts?
-        }
     }
 }

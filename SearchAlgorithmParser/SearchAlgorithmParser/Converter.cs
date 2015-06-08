@@ -11,7 +11,7 @@ namespace SearchAlgorithmParser
         //DFA --> NDFA
         public static NDFA<T, S> ConvertToNDFA(DFA<T, S> dfa)
         {
-            NDFA<T, S> ndfa = new NDFA<T, S>();
+            NDFA<T, S> ndfa = new NDFA<T, S>(dfa.Alphabet);
 
             foreach (T fromState in dfa.GetStates()) {
                 Dictionary<S, T> states = dfa.GetStates(fromState);
@@ -25,7 +25,7 @@ namespace SearchAlgorithmParser
             {
                 ndfa.EndStates.Add(endstate);
             }
-            ndfa.SetStartState(dfa.StartState);
+            ndfa.StartState = dfa.StartState;
             return ndfa;
         }
 
@@ -68,7 +68,7 @@ namespace SearchAlgorithmParser
 
         private static DFA<MultiState<T>, S> GrammarConvertToDFA(Grammar<T, S> grammar, MultiState<T> startState, IMultiStateView<T> view)
         {
-            DFA<MultiState<T>, S> dfa = new DFA<MultiState<T>, S>();
+            DFA<MultiState<T>, S> dfa = new DFA<MultiState<T>, S>(grammar.Alphabet);
             HashSet<MultiState<T>> todo = new HashSet<MultiState<T>>();
             HashSet<MultiState<T>> done = new HashSet<MultiState<T>>();
             todo.Add(startState);
@@ -120,10 +120,7 @@ namespace SearchAlgorithmParser
                         }
                         else
                         {
-                            if (!done.Contains(states[symbol]))
-                            {
-                                todo.Add(states[symbol]);
-                            }
+                            todo.Add(states[symbol]);
                         }
                     }
                 }
@@ -142,9 +139,7 @@ namespace SearchAlgorithmParser
                     }
                 }
             }
-            dfa.SetStartState(startState);
-
-
+            dfa.StartState = startState;
             return dfa;
         }
     }
