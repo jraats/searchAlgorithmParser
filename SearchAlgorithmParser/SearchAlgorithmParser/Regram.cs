@@ -55,7 +55,33 @@ namespace SearchAlgorithmParser
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder regramString = new StringBuilder();
+            regramString.Append("G = ({");
+
+            foreach (T state in this.states.Keys)
+            {
+                if (!this.states[state].Equals(this.states.Last().Value))
+                {
+                    regramString.Append(state + ", ");
+                }
+                else
+                {
+                    regramString.Append(state + "}, {");
+                }
+            }
+
+            foreach (S character in this.Alphabet)
+            {
+                if (!character.Equals(this.Alphabet.Last()))
+                {
+                    regramString.Append(character + ", ");
+                }
+                else
+                {
+                    regramString.Append(character + "}, {");
+                }
+            }
+
             foreach (T fromState in this.states.Keys)
             {
                 //This is a endstate
@@ -69,7 +95,7 @@ namespace SearchAlgorithmParser
                     }
                 }
 
-                builder.Append(fromState + " -> ");
+                regramString.Append(fromState + " -> ");
                 Dictionary<S, List<T>> newState = this.states[fromState];
                 bool isFirst = true;
                 foreach (S symbol in newState.Keys)
@@ -77,31 +103,41 @@ namespace SearchAlgorithmParser
                     foreach (T toState in newState[symbol])
                     {
                         if (!isFirst)
-                            builder.Append(" | ");
+                            regramString.Append(" | ");
 
                         isFirst = false;
 
                         //Don't add the endstate if it is the endstate
                         if (this.EndStates.Contains(toState))
                         {
-                            builder.Append(symbol);
+                            regramString.Append(symbol);
 
                             //If the to state contains any other transitions
-                            if (this.states.ContainsKey(toState) &&  this.states[toState].Keys.Count > 0)
+                            if (this.states.ContainsKey(toState) && this.states[toState].Keys.Count > 0)
                             {
                                 //Add that one to the states
-                                builder.Append(" | " + symbol + toState);
+                                regramString.Append(" | " + symbol + toState);
                             }
                         }
                         else
                         {
-                            builder.Append(symbol + "" + toState);
+                            regramString.Append(symbol + "" + toState);
                         }
                     }
                 }
-                builder.Append("\n");
+                if (!this.states[fromState].Equals(this.states.Last().Value))
+                {
+                    regramString.Append(",\n");
+                }
+                else
+                {
+                    regramString.Append("\n");
+                }
             }
-            return builder.ToString();
+
+            regramString.Append("}, "+this.StartState + " )");
+
+            return regramString.ToString();
         }
     }
 }

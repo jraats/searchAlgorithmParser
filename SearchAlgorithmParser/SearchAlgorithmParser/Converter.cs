@@ -11,7 +11,7 @@ namespace SearchAlgorithmParser
         //DFA --> NDFA
         public static NDFA<T, S> ConvertToNDFA(DFA<T, S> dfa)
         {
-            NDFA<T, S> ndfa = new NDFA<T, S>(dfa.Alphabet);
+            NDFA<T, S> ndfa = new NDFA<T, S>(dfa.Alphabet, default(S));
 
             foreach (T fromState in dfa.GetStates()) {
                 Dictionary<S, T> states = dfa.GetStates(fromState);
