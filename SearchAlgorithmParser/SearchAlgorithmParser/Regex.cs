@@ -3,50 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SearchAlgorithmParser.Regex;
 
 namespace SearchAlgorithmParser
 {
-    public class Regex<T, S> : Grammar<T, S>
+    public class Regex<T> : Machine<T, char>
     {
-        public HashSet<T> StartStates;
+        public RegularExpressionPart<T> Root { get; set; }
+        public iStateCreater<T> StateCreater { get; set; }
 
-        public Regex(S[] alphabet)
+        public Regex(char[] alphabet, RegularExpressionPart<T> root, iStateCreater<T> stateCreater)
             : base(alphabet)
         {
-            this.StartStates = new HashSet<T>();
+            this.Root = root;
+            this.StateCreater = stateCreater;
         }
 
-        public override T StartState
-        {
-            get
-            {
-                return base.StartState;
-            }
-            set
-            {
-                this.StartStates.Add(value);
-                base.StartState = value;
-            }
-        }
-
-        public override void AddTransition(T from, T to, S symbol)
+        public override HashSet<T> GetStates()
         {
             throw new NotImplementedException();
         }
 
-        public void AddStartState(T state)
+        public override void AddTransition(T from, T to, char symbol)
         {
-            this.StartStates.Add(state);
+            throw new NotImplementedException();
         }
 
-        public override bool Validate(S[] toBeVerified)
+        public override bool Validate(char[] toBeVerified)
         {
-            return false;
+            NDFA<T, char> ndfa = SearchAlgorithmParser.Converter<T, char>.ConvertToNDFA(this, 'e');
+            return ndfa.Validate(toBeVerified);
         }
 
-        public override Language<S> GetLanguage(int length)
+        public override Language<char> GetLanguage(int length)
         {
-            return new Language<S>();
+            NDFA<T, char> ndfa = SearchAlgorithmParser.Converter<T, char>.ConvertToNDFA(this, 'e');
+            return ndfa.GetLanguage(length);
         }
 
         public override bool IsMachineValid()
@@ -57,7 +49,7 @@ namespace SearchAlgorithmParser
 
         public override string ToString()
         {
-            return "";
+            return this.Root.ToString();
         }
     }
 }

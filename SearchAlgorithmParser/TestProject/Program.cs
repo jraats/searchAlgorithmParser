@@ -147,15 +147,26 @@ namespace Test_applicatie
 
             RegularExpressionPart<String> p = new RegularExpressionConcat<String>(p1, p2);
 
-            Console.WriteLine(p);
+            Regex<String> reg = new Regex<string>(new char[] { 'a', 'b' }, p, new StringStateCreater(""));
 
-            String endStr = null;
+            Console.WriteLine(reg);
+
+            /*String endStr = null;
             String startState = "LR_S";
             NDFA<String, char> ndfa = new NDFA<string, char>(new char[]{ 'a', 'b'}, 'e');
             p.Convert(new StringStateCreater("LR_"), startState, ref endStr, ndfa);
-            ndfa.StartState = startState;
-            ndfa.EndStates.Add(endStr);
-            ndfa.MakePngFile("test.png");
+            ndfa.StartState = startState;*/
+            Language<char> lang = reg.GetLanguage(5);
+            foreach (char[] word in lang.Words)
+            {
+                Console.WriteLine(word);
+            }
+
+           // NDFA<String, char> ndfa = SearchAlgorithmParser.Converter<String, char>.ConvertToNDFA(reg, 'e');
+
+            //DFA<MultiState<String>, char> dfa = SearchAlgorithmParser.Converter<String, char>.ConvertToDFA(ndfa, new MultiStateViewConcat<String>(" ", "empty"));
+            //dfa.MakePngFile("regex.png");
+            //ndfa.MakePngFile("test.png");
             
 
 

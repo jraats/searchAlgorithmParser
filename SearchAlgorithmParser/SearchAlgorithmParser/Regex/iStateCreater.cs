@@ -9,5 +9,6 @@ namespace SearchAlgorithmParser.Regex
     public interface iStateCreater<T>
     {
         T Next();
+        void Reset();
     }
 }

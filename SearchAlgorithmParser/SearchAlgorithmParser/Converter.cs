@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SearchAlgorithmParser.Regex;
 
 namespace SearchAlgorithmParser
 {
@@ -36,9 +37,17 @@ namespace SearchAlgorithmParser
         }
 
         //Regex --> NDFA
-        public static Regex<T, S> ConvertToNDFA(Regex<T, S> regex)
+        public static NDFA<T, char> ConvertToNDFA(Regex<T> regex, char epsilon)
         {
-            return null;
+            regex.StateCreater.Reset();
+            T endStr = default(T);
+            T startState = regex.StateCreater.Next();
+
+            NDFA<T, char> ndfa = new NDFA<T, char>(regex.Alphabet, epsilon);
+            regex.Root.Convert(regex.StateCreater, startState, ref endStr, ndfa);
+            ndfa.StartState = startState;
+            ndfa.EndStates.Add(endStr);
+            return ndfa;
         }
 
         //DFA --> Regram
@@ -56,21 +65,36 @@ namespace SearchAlgorithmParser
         //NDFA --> DFA
         public static DFA<MultiState<T>, S> ConvertToDFA(NDFA<T, S> ndfa, IMultiStateView<T> view)
         {
-            return Converter<T, S>.GrammarConvertToDFA(ndfa, new MultiState<T>(ndfa.StartStates, view), view);
+            return Converter<T, S>.GrammarConvertToDFA(ndfa, new MultiState<T>(ndfa.StartStates, view), view, ndfa.Epsilon);
         }
 
 
         //Regram --> DFA
         public static DFA<MultiState<T>, S> ConvertToDFA(Regram<T, S> regram, IMultiStateView<T> view)
         {
-            return Converter<T, S>.GrammarConvertToDFA(regram, new MultiState<T>(new T[]{ regram.StartState }, view), view);
+            return Converter<T, S>.GrammarConvertToDFA(regram, new MultiState<T>(new T[] { regram.StartState }, view), view, default(S));
         }
 
-        private static DFA<MultiState<T>, S> GrammarConvertToDFA(Grammar<T, S> grammar, MultiState<T> startState, IMultiStateView<T> view)
+        private static DFA<MultiState<T>, S> GrammarConvertToDFA(Grammar<T, S> grammar, MultiState<T> startState, IMultiStateView<T> view, S epsilon)
         {
             DFA<MultiState<T>, S> dfa = new DFA<MultiState<T>, S>(grammar.Alphabet);
             HashSet<MultiState<T>> todo = new HashSet<MultiState<T>>();
             HashSet<MultiState<T>> done = new HashSet<MultiState<T>>();
+
+            MultiState<T> newStartState = new MultiState<T>(view);
+            foreach (T subStartState in startState)
+            {
+                newStartState.Add(subStartState);
+
+                HashSet<T> otherStates = getAllEpsilonStatesFromState(grammar, subStartState, epsilon);
+                foreach (T otherState in otherStates)
+                {
+                    newStartState.Add(otherState);
+                }
+            }
+
+            startState = newStartState;
+
             todo.Add(startState);
 
             //While there are items that needs to be progressed
@@ -97,6 +121,10 @@ namespace SearchAlgorithmParser
                             foreach (T partToState in partToStates)
                             {
                                 states[symbol].Add(partToState);
+                                foreach (T epsilonState in getAllEpsilonStatesFromState(grammar, partToState, epsilon))
+                                {
+                                    states[symbol].Add(epsilonState);
+                                }
                             }
                         }
 
@@ -141,6 +169,25 @@ namespace SearchAlgorithmParser
             }
             dfa.StartState = startState;
             return dfa;
+        }
+
+        private static HashSet<T> getAllEpsilonStatesFromState(Grammar<T, S> grammar, T from, S epsilon)
+        {
+            Dictionary<S, List<T>> states = grammar.GetStates(from);
+            HashSet<T> newStates = new HashSet<T>();
+
+            if (states.ContainsKey(epsilon))
+            {
+                foreach (T otherState in states[epsilon])
+                {
+                    newStates.Add(otherState);
+                    foreach(T subState in getAllEpsilonStatesFromState(grammar, otherState, epsilon)) {
+                        newStates.Add(subState);
+                    }
+                }
+            }
+
+            return newStates;
         }
     }
 }
