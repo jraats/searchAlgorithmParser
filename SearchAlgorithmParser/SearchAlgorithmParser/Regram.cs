@@ -78,7 +78,7 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    regramString.Append(character + "}, {");
+                    regramString.Append(character + "}, {\n");
                 }
             }
 
