@@ -12,6 +12,8 @@ namespace SearchAlgorithmParser
     {
         private Dictionary<T, Dictionary<S, T>> states;
 
+        private string Delta = "'delta.png'";
+
         public DFA(S[] alphabet)
             : base(alphabet)
         {
@@ -167,16 +169,48 @@ namespace SearchAlgorithmParser
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (T fromState in this.states.Keys)
+            StringBuilder dfaString = new StringBuilder();
+            dfaString.Append("M = ({");
+
+            foreach (T state in this.states.Keys)
             {
-                Dictionary<S, T> newState = this.states[fromState];
-                foreach (S symbol in newState.Keys)
+                if (!this.states[state].Equals(this.states.Last().Value))
                 {
-                    builder.Append("(" + fromState + ", " + symbol + ")" + "-->" + newState[symbol] + ",\n");
+                    dfaString.Append(state + ", ");
+                }
+                else
+                {
+                    dfaString.Append(state + "}, {");
                 }
             }
-            return builder.ToString();
+
+            foreach (S character in this.Alphabet)
+            {
+                if (!character.Equals(this.Alphabet.Last()))
+                {
+                    dfaString.Append(character + ", ");
+                }
+                else
+                {
+                    dfaString.Append(character + "}, ");
+                }
+            }
+
+            dfaString.Append(Delta + ", "+this.StartState+", {");
+
+            foreach (T endState in this.EndStates)
+            {
+                if (!endState.Equals(this.EndStates.Last()))
+                {
+                    dfaString.Append(endState + ", ");
+                }
+                else
+                {
+                    dfaString.Append(endState + "})");
+                }
+            }
+
+            return dfaString.ToString();
         }
     }
 }

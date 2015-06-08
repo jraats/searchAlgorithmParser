@@ -13,7 +13,7 @@ namespace Test_applicatie
     {
         static void Main(string[] args)
         {
-            /*DFA<String, char> d = new DFA<String, char>();
+            DFA<String, char> d = new DFA<String, char>(new char[] { 'a', 'b' });
             d.AddTransition("LR_0", "LR_1", 'a');
             d.AddTransition("LR_0", "LR_4", 'b');
             d.AddTransition("LR_1", "LR_8", 'a');
@@ -38,12 +38,13 @@ namespace Test_applicatie
             d.AddTransition("LR_10", "LR_10", 'b');
 
             d.StartState = "LR_0";
-            d.AddFinalState("LR_3");
-            d.AddFinalState("LR_7");
+            d.EndStates.Add("LR_3");
+            d.EndStates.Add("LR_7");
 
             Console.WriteLine(d.ToString());
+            Console.WriteLine("");
 
-            d.MakePngFile("test.png");
+            /*d.MakePngFile("test.png");
 
             Console.WriteLine(d.Validate("abbabba".ToArray()));
             Console.WriteLine(d.Validate("bbabaab".ToArray()));
@@ -55,7 +56,7 @@ namespace Test_applicatie
                 Console.WriteLine(word);
             }*/
 
-            /*Regram<String, char> gram = new Regram<string, char>();
+            Regram<String, char> gram = new Regram<string, char>(new char[] { 'a', 'b' });
             gram.AddTransition("LR_0", "LR_1", 'a');
             gram.AddTransition("LR_0", "LR_4", 'b');
             gram.AddTransition("LR_1", "LR_8", 'a');
@@ -80,12 +81,13 @@ namespace Test_applicatie
             gram.AddTransition("LR_10", "LR_10", 'b');
 
             gram.StartState = "LR_0";
-            gram.AddFinalState("LR_3");
-            gram.AddFinalState("LR_7");
+            gram.EndStates.Add("LR_3");
+            gram.EndStates.Add("LR_7");
 
             Console.WriteLine(gram.ToString());
+            Console.WriteLine("");
 
-            Console.WriteLine(gram.Validate("abbabba".ToArray()));
+            /*Console.WriteLine(gram.Validate("abbabba".ToArray()));
             Console.WriteLine(gram.Validate("bbabaab".ToArray()));
             Console.WriteLine(gram.Validate("aaaaabba".ToArray()));
 
@@ -124,20 +126,21 @@ namespace Test_applicatie
             DFA<MultiState<String>, char> dfa = SearchAlgorithmParser.Converter<String, char>.ConvertToDFA(ndfa, new MultiStateViewConcat<String>(" ", "LEEG"));
             dfa.MakePngFile("test.png");*/
 
-/*            NDFA<String, char> ndfa = new NDFA<string, char>(new char[] { 'a', 'b' });
+            /*NDFA<String, char> ndfa = new NDFA<string, char>(new char[] { 'a', 'b' }, '$');
             ndfa.StartState = "LR_0";
-            ndfa.StartState = "LR_2";
+            ndfa.AddStartState("LR_2");
             ndfa.AddTransition("LR_0", "LR_1", 'a');
             ndfa.AddTransition("LR_0", "LR_2", 'b');
             ndfa.AddTransition("LR_1", "LR_4", 'a');
-            ndfa.AddTransition("LR_1", "LR_2", 'a');
+            ndfa.AddTransition("LR_1", "LR_2", ndfa.Epsilon);
             ndfa.AddTransition("LR_2", "LR_1", 'b');
             ndfa.AddTransition("LR_2", "LR_3", 'a');
             ndfa.AddTransition("LR_3", "LR_4", 'b');
             ndfa.AddTransition("LR_4", "LR_5", 'a');
             ndfa.AddEndState("LR_3");
             ndfa.AddEndState("LR_5");
-            ndfa.IsMachineValid();*/
+            Console.WriteLine(ndfa.ToString());
+            Console.WriteLine("");*/
 
             RegularExpressionPart<String> p1 = new RegularExpressionStar<String>(new RegularExpressionConcat<String>(new RegularExpressionTerminal<String>('a'), new RegularExpressionTerminal<String>('b')));
             RegularExpressionPart<String> p2 = new RegularExpressionPlus<String>(new RegularExpressionChoice<String>(new RegularExpressionTerminal<String>('b'), new RegularExpressionTerminal<String>('a')));

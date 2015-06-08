@@ -13,7 +13,7 @@ namespace SearchAlgorithmParser
         private string Delta = "'delta.png'";
 
         public HashSet<T> StartStates;
-        public S Epsilon;
+        public S Epsilon { set; get; }
 
         public NDFA(S[] alphabet, S epsilon)
             : base(alphabet)
@@ -64,7 +64,8 @@ namespace SearchAlgorithmParser
 
         public override Language<S> GetLanguage(int length)
         {
-            return new Language<S>();
+            DFA<MultiState<T>, S> dfa = Converter<T, S>.ConvertToDFA(this, new MultiStateViewConcat<T>("", "_"));
+            return dfa.GetLanguage(length);
         }
 
         public override bool IsMachineValid()
@@ -76,7 +77,7 @@ namespace SearchAlgorithmParser
                 {
                     foreach(S symbol in this.states[fromState].Keys)
                     {
-                        if (!this.Alphabet.Contains(symbol))
+                        if (!this.Alphabet.Contains(symbol) && !symbol.Equals(this.Epsilon))
                         {
                             Console.WriteLine("NDFA not valid: Symbol not found in alphabet.");
                             return false;
@@ -84,7 +85,6 @@ namespace SearchAlgorithmParser
                     }
                 }
                 Console.WriteLine("NDFA validated.");
-                Console.WriteLine(this.ToString());
                 return true;
             }
             else
