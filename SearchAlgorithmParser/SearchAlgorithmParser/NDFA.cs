@@ -44,11 +44,11 @@ namespace SearchAlgorithmParser
         {
             if (!this.states.ContainsKey(from))
             {
-                this.states.Add(from, new Dictionary<S, List<T>>());
+                this.states.Add(from, new Dictionary<S, HashSet<T>>());
             }
             if(!this.states[from].ContainsKey(symbol))
             {
-                this.states[from].Add(symbol, new List<T>());
+                this.states[from].Add(symbol, new HashSet<T>());
             }
             if (!this.states[from][symbol].Contains(to))
             {
@@ -100,7 +100,7 @@ namespace SearchAlgorithmParser
 
             if (!this.states.ContainsKey(state))
             {
-                this.states.Add(state, new Dictionary<S, List<T>>());
+                this.states.Add(state, new Dictionary<S, HashSet<T>>());
             }
         }
 
@@ -124,7 +124,7 @@ namespace SearchAlgorithmParser
             streamWriter.WriteLine("node [shape = circle];");
             foreach (T fromState in this.states.Keys)
             {
-                Dictionary<S, List<T>> newState = this.states[fromState];
+                Dictionary<S, HashSet<T>> newState = this.states[fromState];
                 foreach (S symbol in newState.Keys)
                 {
                     foreach(T otherState in newState[symbol])

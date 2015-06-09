@@ -53,13 +53,142 @@ namespace SearchAlgorithmParser
         //DFA --> Regram
         public static Regram<T, S> ConvertToRegram(DFA<T, S> dfa)
         {
-            return null;
+            Regram<T, S> regram = new Regram<T, S>(dfa.Alphabet);
+
+            foreach (T fromState in dfa.GetStates())
+            {
+                if (!isRegramStateValid(dfa, fromState))
+                    continue;
+
+                Dictionary<S, T> states = dfa.GetStates(fromState);
+                foreach (S key in states.Keys)
+                {
+                    if(isRegramStateValid(dfa, states[key]) || dfa.EndStates.Contains(states[key]))
+                        regram.AddTransition(fromState, states[key], key);
+                }
+            }
+
+            foreach (T endstate in dfa.EndStates)
+            {
+                regram.EndStates.Add(endstate);
+            }
+            regram.StartState = dfa.StartState;
+            return regram;
+        }
+
+        private static bool isRegramStateValid(DFA<T, S> dfa, T state)
+        {
+            Dictionary<S, T> otherStates = dfa.GetStates(state);
+            foreach (T otherState in otherStates.Values)
+            {
+                if (!otherState.Equals(state))
+                {
+                    return true;
+                }
+            }
+
+            if (dfa.EndStates.Contains(state) && dfa.GetStates(state).Count != 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool isRegramStateValid(NDFA<T, S> ndfa, T state)
+        {
+            Dictionary<S, HashSet<T>> otherTransitions = ndfa.GetStates(state);
+            foreach (HashSet<T> otherStates in otherTransitions.Values)
+            {
+                foreach (T otherState in otherStates)
+                {
+                    if (!otherState.Equals(state))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (ndfa.EndStates.Contains(state) && ndfa.GetStates(state).Count != 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         //NDFA --> Regram
-        public static Regram<T, S> ConvertToRegram(NDFA<T, S> ndfa)
+        public static Regram<MultiState<T>, S> ConvertToRegram(NDFA<T, S> ndfa, IMultiStateView<T> view)
         {
-            return null;
+            Regram<MultiState<T>, S> regram = new Regram<MultiState<T>, S>(ndfa.Alphabet);
+            MultiState<T> startState = new MultiState<T>(view);
+            HashSet<MultiState<T>> todo = new HashSet<MultiState<T>>();
+            HashSet<MultiState<T>> done = new HashSet<MultiState<T>>();
+
+            foreach (T subStartState in ndfa.StartStates)
+            {
+                startState.Add(subStartState);
+
+                HashSet<T> otherStates = getAllEpsilonStatesFromState(ndfa, subStartState, ndfa.Epsilon);
+                foreach (T otherState in otherStates)
+                {
+                    startState.Add(otherState);
+                }
+            }
+
+            todo.Add(startState);
+
+            //While there are items that needs to be progressed
+            while (todo.Count > 0)
+            {
+                MultiState<T> from = todo.First<MultiState<T>>();
+
+                foreach (T part in from)
+                {
+                    if (isRegramStateValid(ndfa, part))
+                        regram.AddState(from);
+
+                    Dictionary<S, HashSet<T>> partStates = ndfa.GetStates(part);
+
+                    foreach (S symbol in partStates.Keys)
+                    {
+                        if (symbol.Equals(ndfa.Epsilon))
+                            continue;
+
+                        HashSet<T> partToStates = partStates[symbol];
+                        foreach (T partToState in partToStates)
+                        {
+                            MultiState<T> newState = new MultiState<T>(view);
+                            newState.Add(partToState);
+                            if (isRegramStateValid(ndfa, partToState) || ndfa.EndStates.Contains(partToState))
+                                regram.AddTransition(from, newState, symbol);
+
+                            if (!done.Contains(newState))
+                                todo.Add(newState);
+
+                            foreach (T epsilonState in getAllEpsilonStatesFromState(ndfa, partToState, ndfa.Epsilon))
+                            {
+                                MultiState<T> newEpsilonState = new MultiState<T>(view);
+                                newEpsilonState.Add(epsilonState);
+                                if (isRegramStateValid(ndfa, epsilonState) || ndfa.EndStates.Contains(epsilonState))
+                                    regram.AddTransition(from, newEpsilonState, symbol);
+
+                                if (!done.Contains(newEpsilonState))
+                                    todo.Add(newEpsilonState);
+                            }
+                        }
+                    }
+                }
+
+                todo.Remove(from);
+                done.Add(from);
+            }
+
+            foreach(MultiState<T> state in regram.GetStates().Where((t) => t.Any((a) => ndfa.EndStates.Contains(a)))) {
+                regram.EndStates.Add(state);
+            }
+            regram.StartState = startState;
+            return regram;
         }
 
         //NDFA --> DFA
@@ -106,7 +235,7 @@ namespace SearchAlgorithmParser
 
                 foreach (T part in from)
                 {
-                    Dictionary<S, List<T>> partStates = grammar.GetStates(part);
+                    Dictionary<S, HashSet<T>> partStates = grammar.GetStates(part);
 
                     foreach (S symbol in grammar.Alphabet)
                     {
@@ -117,7 +246,7 @@ namespace SearchAlgorithmParser
 
                         if (partStates.ContainsKey(symbol))
                         {
-                            List<T> partToStates = partStates[symbol];
+                            HashSet<T> partToStates = partStates[symbol];
                             foreach (T partToState in partToStates)
                             {
                                 states[symbol].Add(partToState);
@@ -173,7 +302,7 @@ namespace SearchAlgorithmParser
 
         private static HashSet<T> getAllEpsilonStatesFromState(Grammar<T, S> grammar, T from, S epsilon)
         {
-            Dictionary<S, List<T>> states = grammar.GetStates(from);
+            Dictionary<S, HashSet<T>> states = grammar.GetStates(from);
             HashSet<T> newStates = new HashSet<T>();
 
             if (states.ContainsKey(epsilon))

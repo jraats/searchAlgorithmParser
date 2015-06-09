@@ -8,12 +8,12 @@ namespace SearchAlgorithmParser
 {
     public abstract class Grammar<T, S> : Machine<T, S>
     {
-        protected Dictionary<T, Dictionary<S, List<T>>> states;
+        protected Dictionary<T, Dictionary<S, HashSet<T>>> states;
 
         public Grammar(S[] alphabet)
             : base(alphabet)
         {
-            this.states = new Dictionary<T, Dictionary<S, List<T>>>();
+            this.states = new Dictionary<T, Dictionary<S, HashSet<T>>>();
         }
 
         public override HashSet<T> GetStates()
@@ -21,10 +21,10 @@ namespace SearchAlgorithmParser
             return new HashSet<T>(states.Keys);
         }
 
-        public Dictionary<S, List<T>> GetStates(T state)
+        public Dictionary<S, HashSet<T>> GetStates(T state)
         {
             if (!this.states.ContainsKey(state))
-                return new Dictionary<S,List<T>>();
+                return new Dictionary<S,HashSet<T>>();
 
             return this.states[state];
         }
