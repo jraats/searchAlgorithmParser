@@ -174,7 +174,7 @@ namespace Test_applicatie
             
             */
 
-            NDFA<String, char> ndfa = new NDFA<string, char>(new char[]{ 'a', 'b'}, 'e');
+            /*NDFA<String, char> ndfa = new NDFA<string, char>(new char[]{ 'a', 'b'}, 'e');
             ndfa.AddTransition("LR_0", "LR_1", 'a');
             ndfa.AddTransition("LR_0", "LR_2", 'b');
             ndfa.AddTransition("LR_0", "LR_3", 'b');
@@ -202,7 +202,26 @@ namespace Test_applicatie
             ndfa.MakePngFile("dfa.png");
 
             Regram<MultiState<String>, char> regram = SearchAlgorithmParser.Converter<String, char>.ConvertToRegram(ndfa, new MultiStateViewConcat<String>(" ", "empty"));
+            Console.WriteLine(regram);*/
+
+            Regram<String, char> regram = new Regram<string, char>(new char[] { 'a', 'b' });
+            regram.AddTransition("LR_0", "LR_1", 'a');
+            regram.AddTransition("LR_0", "LR_2", 'a');
+            regram.AddTransition("LR_1", "LR_3", 'b');
+            regram.AddTransition("LR_2", "LR_2", 'a');
+            regram.AddTransition("LR_2", "LR_4", 'b');
+            regram.AddTransition("LR_3", "LR_0", 'b');
+            regram.AddTransition("LR_4", "LR_5", 'a');
+            regram.AddTransition("LR_4", "LR_6", 'a');
+            regram.AddTransition("LR_5", "LR_6", 'b');
+
+            regram.EndStates.Add("LR_6");
+            regram.StartState = "LR_0";
+
             Console.WriteLine(regram);
+
+            NDFA<String, char> ndfa = SearchAlgorithmParser.Converter<String, char>.ConvertToNDFA(regram, 'e');
+            ndfa.MakePngFile("bla.png");
 
             Console.ReadLine();
         }

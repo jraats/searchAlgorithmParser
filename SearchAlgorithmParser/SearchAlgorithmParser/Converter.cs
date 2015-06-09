@@ -31,9 +31,27 @@ namespace SearchAlgorithmParser
         }
 
         //Regram --> NDFA
-        public static NDFA<T, S> ConvertToNDFA(Regram<T, S> ndfa)
+        public static NDFA<T, S> ConvertToNDFA(Regram<T, S> regram, S epsilon)
         {
-            return null;
+            NDFA<T, S> ndfa = new NDFA<T, S>(regram.Alphabet, epsilon);
+            foreach (T fromState in regram.GetStates())
+            {
+                Dictionary<S, HashSet<T>> states = regram.GetStates(fromState);
+                foreach (S key in states.Keys)
+                {
+                    foreach (T toState in states[key])
+                    {
+                        ndfa.AddTransition(fromState, toState, key);
+                    }
+                }
+            }
+
+            foreach (T endstate in regram.EndStates)
+            {
+                ndfa.EndStates.Add(endstate);
+            }
+            ndfa.StartState = regram.StartState;
+            return ndfa;
         }
 
         //Regex --> NDFA
