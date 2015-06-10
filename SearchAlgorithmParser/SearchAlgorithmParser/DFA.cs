@@ -117,6 +117,63 @@ namespace SearchAlgorithmParser
             return this.states[state];
         }
 
+        public void MinimaliseDFA()
+        {
+            Dictionary<int, Dictionary<T, Dictionary<S, T>>> test = new Dictionary<int, Dictionary<T, Dictionary<S, T>>>();
+            Dictionary<T, Dictionary<S, T>> normalStates = new Dictionary<T, Dictionary<S, T>>();
+            Dictionary<T, Dictionary<S, T>> endStates = new Dictionary<T, Dictionary<S, T>>();
+
+            int stateCounter = 0;
+            bool entryFound;
+
+            foreach(T state in states.Keys)
+            {
+                if (this.EndStates.Contains(state))
+                {
+                    endStates.Add(state, states[state]);
+                }
+                else
+                {
+                    normalStates.Add(state, states[state]);
+                }
+            }
+
+            test.Add(stateCounter, normalStates);
+            stateCounter++;
+            test.Add(stateCounter, endStates);
+            stateCounter++;
+                
+            //entryFound = false;
+
+            //foreach(Dictionary<T,Dictionary<S,T>> testState in test.Values)
+            //{
+            //    if (testState.ContainsKey(state))
+            //    {
+            //        entryFound = true;
+            //        if(!testState[state].Values.Equals(states[state]))
+            //        {
+            //            testState.Add(state, states[state]);
+            //        }
+            //        else
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
+
+            //if(!entryFound)
+            //{
+            //    test.Add(stateCounter, new Dictionary<T, Dictionary<S, T>>());
+            //    test[stateCounter].Add(state, states[state]);
+            //    stateCounter++;
+            //}
+
+            Console.WriteLine(normalStates.Count);
+            Console.WriteLine(endStates.Count);
+
+            Console.WriteLine(stateCounter);
+        }
+
         public void MakeDotFile(String output)
         {
             FileStream fileStream =
