@@ -20,5 +20,10 @@ namespace SearchAlgorithmParser.Regex
         {
             return prefix + (++nextNr);
         }
+
+        public void Reset()
+        {
+            this.nextNr = 0;
+        }
     }
 }

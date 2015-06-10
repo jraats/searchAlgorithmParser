@@ -14,21 +14,24 @@ namespace SearchAlgorithmParser
         {
         }
 
-        public void AddTransition(T fromto, S symbol)
+        public void AddState(T state)
         {
-            this.AddTransition(fromto, fromto, symbol);
+            if (!this.states.ContainsKey(state))
+            {
+                this.states.Add(state, new Dictionary<S, HashSet<T>>());
+            }
         }
 
         public override void AddTransition(T from, T to, S symbol)
         {
             if (!this.states.ContainsKey(from))
             {
-                this.states.Add(from, new Dictionary<S, List<T>>());
+                this.states.Add(from, new Dictionary<S, HashSet<T>>());
             }
 
             if (!this.states[from].ContainsKey(symbol))
             {
-                this.states[from][symbol] = new List<T>();
+                this.states[from][symbol] = new HashSet<T>();
             }
 
             this.states[from][symbol].Add(to);
@@ -96,8 +99,15 @@ namespace SearchAlgorithmParser
                 }
 
                 regramString.Append(fromState + " -> ");
-                Dictionary<S, List<T>> newState = this.states[fromState];
+                Dictionary<S, HashSet<T>> newState = this.states[fromState];
                 bool isFirst = true;
+
+                if (this.StartState.Equals(fromState) && this.EndStates.Contains(this.StartState))
+                {
+                    isFirst = false;
+                    regramString.Append('e');
+                }
+
                 foreach (S symbol in newState.Keys)
                 {
                     foreach (T toState in newState[symbol])
