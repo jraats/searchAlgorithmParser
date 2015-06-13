@@ -124,7 +124,6 @@ namespace SearchAlgorithmParser
             Dictionary<T, Dictionary<S, T>> endStates = new Dictionary<T, Dictionary<S, T>>();
 
             int stateCounter = 0;
-            bool entryFound;
 
             foreach(T state in states.Keys)
             {
@@ -142,31 +141,6 @@ namespace SearchAlgorithmParser
             stateCounter++;
             test.Add(stateCounter, endStates);
             stateCounter++;
-                
-            //entryFound = false;
-
-            //foreach(Dictionary<T,Dictionary<S,T>> testState in test.Values)
-            //{
-            //    if (testState.ContainsKey(state))
-            //    {
-            //        entryFound = true;
-            //        if(!testState[state].Values.Equals(states[state]))
-            //        {
-            //            testState.Add(state, states[state]);
-            //        }
-            //        else
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-
-            //if(!entryFound)
-            //{
-            //    test.Add(stateCounter, new Dictionary<T, Dictionary<S, T>>());
-            //    test[stateCounter].Add(state, states[state]);
-            //    stateCounter++;
-            //}
 
             Console.WriteLine(normalStates.Count);
             Console.WriteLine(endStates.Count);
