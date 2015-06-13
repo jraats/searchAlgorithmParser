@@ -148,6 +148,54 @@ namespace SearchAlgorithmParser
             Console.WriteLine(stateCounter);
         }
 
+        public NDFA<T, S> reverse(DFA<T,S> dfa)
+        {
+            NDFA<T, S> ndfa = new NDFA<T, S>(this.Alphabet, default(S));
+
+            Dictionary<T, Dictionary<S, T>> reversedStates = new Dictionary<T,Dictionary<S,T>>();
+            HashSet<T> reversedEndStates = new HashSet<T>();
+            HashSet<T> startStates = new HashSet<T>();
+
+            foreach (T transitionFromState in dfa.states.Keys)
+            {
+                foreach (KeyValuePair<S, T> transitionTo in dfa.states[transitionFromState])
+                {
+                    if(!reversedStates.Keys.Contains(transitionTo.Value))
+                    {
+                        reversedStates.Add(transitionTo.Value, new Dictionary<S, T>());
+                    }
+                    if (transitionFromState.Equals(dfa.StartState))
+                    {
+                        // flipping start to end state
+                        reversedEndStates.Add(transitionFromState);
+                        // adding to ndfa
+                        ndfa.AddEndState(transitionFromState);
+                    }
+                    if (dfa.EndStates.Contains(transitionFromState))
+                    {
+                        // flipping end to start state
+                        startStates.Add(transitionFromState);
+                        // adding to ndfa
+                        ndfa.StartState = transitionFromState;
+                    }
+                    if (!reversedStates[transitionTo.Value].ContainsKey(transitionTo.Key))
+                    {
+                        reversedStates[transitionTo.Value].Add(transitionTo.Key, transitionFromState);
+                    }
+                }
+            }
+            
+            foreach(T transitionFromState in reversedStates.Keys)
+            {
+                foreach(KeyValuePair<S, T> transitionTo in reversedStates[transitionFromState])
+                {
+                    ndfa.AddTransition(transitionFromState, transitionTo.Value, transitionTo.Key);
+                }
+            }
+
+            return ndfa;
+        }
+
         public void MakeDotFile(String output)
         {
             FileStream fileStream =
