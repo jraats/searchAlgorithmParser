@@ -129,6 +129,36 @@ namespace SearchAlgorithmParser
             ToDFA(Reverse(ToDFA(Reverse(this))));
         }
 
+        public override void Or()
+        {
+
+        }
+
+        public override void And()
+        {
+
+        }
+
+        public override void Not()
+        {
+            Dictionary<T, Dictionary<S, T>> oldStates = new Dictionary<T, Dictionary<S, T>>(this.states);
+            HashSet<T> oldEndStates = new HashSet<T>(this.EndStates); 
+            this.states.Clear();
+            this.EndStates.Clear();
+
+            foreach (T transitionFromState in oldStates.Keys)
+            {
+                if (!oldEndStates.Contains(transitionFromState) || transitionFromState.Equals(this.StartState))
+                {
+                    this.EndStates.Add(transitionFromState);
+                }
+                foreach (S transitionSymbol in oldStates[transitionFromState].Keys)
+                {
+                    this.AddTransition(transitionFromState, oldStates[transitionFromState][transitionSymbol], transitionSymbol);
+                }
+            }
+        }
+
         private T concatStates(SortedSet<T> states)
         {
             dynamic newState = null;

@@ -38,6 +38,21 @@ namespace SearchAlgorithmParser
 
         }
 
+        public override void Or()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void And()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Not()
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool Validate(S[] toBeVerified)
         {
             DFA<MultiState<T>, S> dfa = Converter<T, S>.ConvertToDFA(this, new MultiStateViewConcat<T>("", "_"));
