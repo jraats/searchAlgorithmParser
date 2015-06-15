@@ -104,6 +104,39 @@ namespace SearchAlgorithmParser
             }
         }
 
+        public override void Or()
+        {
+
+        }
+
+        public override void And()
+        {
+
+        }
+
+        public override void Not()
+        {
+            Dictionary<T, Dictionary<S, HashSet<T>>> oldStates = new Dictionary<T, Dictionary<S, HashSet<T>>>(this.states);
+            HashSet<T> oldEndStates = new HashSet<T>(this.EndStates);
+            this.states.Clear();
+            this.EndStates.Clear();
+
+            foreach (T transitionFromState in oldStates.Keys)
+            {
+                if (!oldEndStates.Contains(transitionFromState) || transitionFromState.Equals(this.StartState))
+                {
+                    this.EndStates.Add(transitionFromState);
+                }
+                foreach (S transitionSymbol in oldStates[transitionFromState].Keys)
+                {
+                    foreach (T transitionToState in oldStates[transitionFromState][transitionSymbol])
+                    {
+                        this.AddTransition(transitionFromState, transitionToState, transitionSymbol);
+                    }
+                }
+            }
+        }
+
         public void MakeDotFile(String output)
         {
             FileStream fileStream =
