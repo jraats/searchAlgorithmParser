@@ -111,6 +111,9 @@
     <EmbeddedResource Include="FrmNDFA.resx">
       <DependentUpon>FrmNDFA.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmRegularGrammar.resx">
+      <DependentUpon>FrmRegularGrammar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

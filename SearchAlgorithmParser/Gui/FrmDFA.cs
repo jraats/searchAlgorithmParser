@@ -231,7 +231,14 @@ namespace Gui
 
         private void tsbToRegram_Click(object sender, EventArgs e)
         {
+            DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+                return;
 
+            Regram<string, char> regram = SearchAlgorithmParser.Converter<string, char>.ConvertToRegram(dfa);
+            FrmRegularGrammar frmRegram = new FrmRegularGrammar(regram);
+            frmRegram.MdiParent = this.MdiParent;
+            frmRegram.Show();
         }
 
         private void tsbToPng_Click(object sender, EventArgs e)
