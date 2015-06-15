@@ -11,13 +11,20 @@ namespace SearchAlgorithmParser
     public class DFA<T, S> : Machine<T, S>
     {
         private Dictionary<T, Dictionary<S, T>> states;
-
+        private T Trap;
         private string Delta = "'delta.png'";
 
         public DFA(S[] alphabet)
             : base(alphabet)
         {
             this.states = new Dictionary<T, Dictionary<S, T>>();
+        }
+
+        public DFA(S[] alphabet, T trap)
+            : base(alphabet)
+        {
+            this.states = new Dictionary<T, Dictionary<S, T>>();
+            this.Trap = trap;
         }
 
         public override void AddTransition(T from, T to, S symbol)
@@ -119,33 +126,134 @@ namespace SearchAlgorithmParser
 
         public void MinimaliseDFA()
         {
-            Dictionary<int, Dictionary<T, Dictionary<S, T>>> test = new Dictionary<int, Dictionary<T, Dictionary<S, T>>>();
-            Dictionary<T, Dictionary<S, T>> normalStates = new Dictionary<T, Dictionary<S, T>>();
-            Dictionary<T, Dictionary<S, T>> endStates = new Dictionary<T, Dictionary<S, T>>();
+            ToDFA(Reverse(ToDFA(Reverse(this))));
+        }
 
-            int stateCounter = 0;
-
-            foreach(T state in states.Keys)
+        private T concatStates(SortedSet<T> states)
+        {
+            dynamic newState = null;
+            foreach(T state in states)
             {
-                if (this.EndStates.Contains(state))
+                newState += state;
+            }
+            return newState;
+        }
+
+        private DFA<T, S> ToDFA(NDFA<T, S> ndfa)
+        {
+            this.Alphabet = ndfa.Alphabet;
+            states = new Dictionary<T, Dictionary<S, T>>();
+            this.EndStates.Clear();
+
+            Stack<SortedSet<T>> combinedStates = new Stack<SortedSet<T>>();
+            Stack<SortedSet<T>> unprocessedStates = new Stack<SortedSet<T>>();
+
+            // setting new combined start state and push it to unprocessed stack
+            unprocessedStates.Push(new SortedSet<T>(ndfa.StartStates));
+            this.StartState = concatStates(new SortedSet<T>(ndfa.StartStates));
+
+            // combining and processing new states
+            while (unprocessedStates.Count > 0)
+            {
+                Dictionary<S, SortedSet<T>> newStates = new Dictionary<S, SortedSet<T>>();
+                SortedSet<T> unProcessedStateSet = unprocessedStates.Pop();
+
+                foreach (T unprocessedState in unProcessedStateSet)
                 {
-                    endStates.Add(state, states[state]);
+                    foreach (S symbol in ndfa.GetStates(unprocessedState).Keys)
+                    {
+                        foreach (T toState in ndfa.GetStates(unprocessedState)[symbol])
+                        {
+                            if (!newStates.ContainsKey(symbol))
+                            {
+                                newStates.Add(symbol, new SortedSet<T>());
+                            }
+                            newStates[symbol].Add(toState);
+                        }
+                    }
                 }
-                else
+
+                combinedStates.Push(unProcessedStateSet);
+
+                foreach (S symbol in newStates.Keys)
                 {
-                    normalStates.Add(state, states[state]);
+                    AddTransition(concatStates(unProcessedStateSet), concatStates(newStates[symbol]), symbol);
+
+                    bool isSetAlreadyProcessed = false;
+
+                    // set new combined end state
+                    foreach(T ndfaEndState in ndfa.EndStates)
+                    {
+                        if(newStates[symbol].Contains(ndfaEndState)) this.EndStates.Add(concatStates(newStates[symbol]));
+                    }
+                    // check if newfound combined state was previously found and processed
+                    foreach (SortedSet<T> combinedState in combinedStates)
+                    {
+                        if (combinedState.SetEquals(newStates[symbol]))
+                        {
+                            isSetAlreadyProcessed = true;
+                            break;
+                        }
+                    }
+                    if (!isSetAlreadyProcessed)
+                    {
+                        foreach (SortedSet<T> unProcessedState in unprocessedStates)
+                        {
+                            if (unProcessedState.SetEquals(newStates[symbol]))
+                            {
+                                isSetAlreadyProcessed = true;
+                                break;
+                            }
+                        }
+                        // add newfound combined state to unprocessed stack
+                        if (!isSetAlreadyProcessed) unprocessedStates.Push(newStates[symbol]);
+                    }
                 }
             }
+             
+            // adding trap for missing transitions
+            bool isTrapPlaced = false;
+            foreach (T transition in states.Keys)
+            {
+                foreach(S symbol in this.Alphabet)
+                {
+                    if(!states[transition].ContainsKey(symbol))
+                    {
+                        AddTransition(transition, Trap, symbol);
+                        isTrapPlaced = true;
+                    }
+                }
+            }
+            if (isTrapPlaced)
+            {
+                foreach (S symbol in this.Alphabet)
+                {
+                    AddTransition(Trap, Trap, symbol);
+                }
+            }
+            return this;
+        }
 
-            test.Add(stateCounter, normalStates);
-            stateCounter++;
-            test.Add(stateCounter, endStates);
-            stateCounter++;
+        private NDFA<T, S> Reverse(DFA<T,S> dfa)
+        {
+            NDFA<T, S> ndfa = new NDFA<T, S>(dfa.Alphabet, default(S));
 
-            Console.WriteLine(normalStates.Count);
-            Console.WriteLine(endStates.Count);
-
-            Console.WriteLine(stateCounter);
+            foreach (T transitionFromState in dfa.states.Keys)
+            {
+                foreach (S transitionSymbol in dfa.states[transitionFromState].Keys)
+                {
+                    if (transitionFromState.Equals(dfa.StartState))
+                    {
+                        ndfa.AddEndState(transitionFromState);
+                    }
+                    if (dfa.EndStates.Contains(transitionFromState))
+                    {
+                        ndfa.StartState = transitionFromState;
+                    }
+                    ndfa.AddTransition(dfa.states[transitionFromState][transitionSymbol], transitionFromState, transitionSymbol);
+                }
+            }
+            return ndfa;
         }
 
         public void MakeDotFile(String output)
@@ -181,6 +289,7 @@ namespace SearchAlgorithmParser
 
         public void MakePngFile(String output)
         {
+            Delta = output;
             MakeDotFile("temp.dot");
             Process process = new Process();
             process.StartInfo =

@@ -10,7 +10,7 @@ namespace SearchAlgorithmParser
     {
         public HashSet<T> EndStates { private set; get; }
         public virtual T StartState { set; get; }
-        public S[] Alphabet { private set; get; }
+        public S[] Alphabet { set; get; }
 
         public Machine(S[] alphabet)
         {

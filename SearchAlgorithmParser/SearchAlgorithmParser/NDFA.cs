@@ -138,6 +138,7 @@ namespace SearchAlgorithmParser
 
         public void MakePngFile(String output)
         {
+            Delta = output;
             MakeDotFile("temp.dot");
             Process process = new Process();
             process.StartInfo =
