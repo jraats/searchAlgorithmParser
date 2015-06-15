@@ -7,20 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SearchAlgorithmParser;
 
 namespace Gui
 {
-    public partial class FrmNDFA : Form
+    public abstract partial class FrmAbstractAutomate : Form
     {
-
         DataTableColumnSource<char> alphabetSource;
         DataTableColumnSource<string> stateSource;
         int lastDeletedIndex;
 
-        public FrmNDFA()
+        public FrmAbstractAutomate()
         {
             InitializeComponent();
+
+            this.lblTitle.Text = this.GetTitle();
 
             alphabetSource = new DataTableColumnSource<char>(ref this.dgvAlphabet, 0);
             stateSource = new DataTableColumnSource<string>(ref this.dgvStates, 0);
@@ -36,7 +36,7 @@ namespace Gui
             clm2BS.DataSource = stateSource;
             column.DataSource = clm2BS;
             column.ValueType = typeof(string);
-            
+
             column = (DataGridViewComboBoxColumn)this.dgvTransitions.Columns[2];
             BindingSource clm3BS = new BindingSource();
             clm3BS.DataSource = alphabetSource;
@@ -53,8 +53,8 @@ namespace Gui
         private void dgvAlphabet_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             DataGridViewRow row = e.Row;
-            string value = (row.Cells[0].Value != null)? row.Cells[0].Value.ToString() : "";
-            
+            string value = (row.Cells[0].Value != null) ? row.Cells[0].Value.ToString() : "";
+
             alphabetSource.PosibleChange(ListChangedType.ItemDeleted, lastDeletedIndex);
 
             List<DataGridViewRow> removeRows = new List<DataGridViewRow>();
@@ -65,8 +65,8 @@ namespace Gui
                     removeRows.Add(dataRow);
             }
 
-                
-            foreach(DataGridViewRow dataRow in removeRows)
+
+            foreach (DataGridViewRow dataRow in removeRows)
             {
                 this.dgvTransitions.Rows.Remove(dataRow);
             }
@@ -74,7 +74,7 @@ namespace Gui
 
         private void dgvAlphabet_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if(this.dgvAlphabet.Rows[e.RowIndex].IsNewRow)
+            if (this.dgvAlphabet.Rows[e.RowIndex].IsNewRow)
                 alphabetSource.PosibleChange(ListChangedType.ItemAdded, e.RowIndex);
             else
                 alphabetSource.PosibleChange(ListChangedType.ItemChanged, e.RowIndex);
@@ -95,8 +95,8 @@ namespace Gui
         {
             DataGridViewRow row = e.Row;
             string value = (row.Cells[0].Value != null) ? row.Cells[0].Value.ToString() : "";
-            stateSource.PosibleChange(ListChangedType.ItemDeleted, lastDeletedIndex);
-            
+            stateSource.PosibleChange(ListChangedType.ItemDeleted, this.dgvStates.Rows.IndexOf(e.Row));
+
             List<DataGridViewRow> removeRows = new List<DataGridViewRow>();
             //Update transitions
             foreach (DataGridViewRow dataRow in this.dgvTransitions.Rows)
@@ -107,7 +107,7 @@ namespace Gui
                     removeRows.Add(dataRow);
             }
 
-            foreach(DataGridViewRow dataRow in removeRows)
+            foreach (DataGridViewRow dataRow in removeRows)
             {
                 this.dgvTransitions.Rows.Remove(dataRow);
             }
@@ -121,98 +121,6 @@ namespace Gui
 
         }
 
-        private NDFA<string, char> getNDFA()
-        {
-            NDFA<string, char> ndfa = new NDFA<string, char>(this.alphabetSource.Cast<char>().ToArray(), 'e');
-
-            foreach (DataGridViewRow dataRow in this.dgvTransitions.Rows)
-            {
-                if (dataRow.Cells[2].Value == null || dataRow.Cells[2].Value.ToString() == "")
-                    continue;
-
-                string from = dataRow.Cells[0].Value.ToString();
-                string to = dataRow.Cells[1].Value.ToString();
-                char symbol = dataRow.Cells[2].Value.ToString().First();
-                ndfa.AddTransition(from, to, symbol);
-            }
-
-            foreach (DataGridViewRow dataRow in this.dgvStates.Rows)
-            {
-                if (dataRow.Cells[0].Value == null || dataRow.Cells[0].Value.ToString() == "")
-                    continue;
-
-                string name = dataRow.Cells[0].Value.ToString();
-                bool startState = !((dataRow.Cells[1]).Value == null);
-                bool endState = !((dataRow.Cells[2]).Value == null);
-
-                if (startState)
-                {
-                    ndfa.StartState = name;
-                }
-                if (endState)
-                {
-                    ndfa.EndStates.Add(name);
-                }
-            }
-
-            if (!ndfa.IsMachineValid())
-            {
-                MessageBox.Show("Machine is not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-
-            return ndfa;
-        }
-
-        private void tsbToDFA_Click(object sender, EventArgs e)
-        {
-            NDFA<string, char> ndfa = getNDFA();
-            if (ndfa == null)
-                return;
-
-            DFA<MultiState<string>, char> dfa = SearchAlgorithmParser.Converter<string, char>.ConvertToDFA(ndfa, new SearchAlgorithmParser.MultiStateViewConcat<string>("", "O"));
-            FrmDFA frmDfa = new FrmDFA(dfa);
-            frmDfa.MdiParent = this.MdiParent;
-            frmDfa.Show();
-        }
-
-        private void tsbToRegram_Click(object sender, EventArgs e)
-        {
-           /* NDFA<string, char> ndfa = getNDFA();
-            if (ndfa == null)
-                return;
-
-            Regram<MultiState<string>, char> dfa = SearchAlgorithmParser.Converter<string, char>.ConvertToRegram(ndfa, new SearchAlgorithmParser.MultiStateViewConcat<string>("", "O"));
-            FrmRegularGrammar frmRegram = new FrmRegularGrammar(dfa);
-            frmRegram.MdiParent = this.MdiParent;
-            frmRegram.Show();*/
-        }
-
-        private void tsbToPng_Click(object sender, EventArgs e)
-        {
-            NDFA<string, char> ndfa = getNDFA();
-            if (ndfa == null)
-                return;
-
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.AddExtension = true;
-            dialog.DefaultExt = ".png";
-            dialog.Filter = "*.png|.png";
-            dialog.FilterIndex = 0;
-            dialog.OverwritePrompt = true;
-            if(dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                ndfa.MakePngFile(dialog.FileName);
-                FrmImage image = new FrmImage();
-                image.SetPicture(dialog.FileName);
-                image.MdiParent = this.MdiParent;
-                image.Show();
-            }
-        }
-
-        private void dgvTransitions_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-
-        }
+        public abstract string GetTitle();
     }
 }

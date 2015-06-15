@@ -1,6 +1,6 @@
 ﻿namespace Gui
 {
-    partial class FrmDFA
+    partial class FrmAbstractAutomate
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDFA));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmNDFA));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbToPng = new System.Windows.Forms.ToolStripButton();
-            this.tsbToMinimalDFA = new System.Windows.Forms.ToolStripButton();
+            this.tsbToDFA = new System.Windows.Forms.ToolStripButton();
             this.tsbToRegram = new System.Windows.Forms.ToolStripButton();
             this.lblTitle = new System.Windows.Forms.Label();
             this.dgvStates = new System.Windows.Forms.DataGridView();
@@ -57,40 +57,13 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbToPng,
-            this.tsbToMinimalDFA,
+            this.tsbToDFA,
             this.tsbToRegram});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(533, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(687, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // tsbToPng
-            // 
-            this.tsbToPng.Image = ((System.Drawing.Image)(resources.GetObject("tsbToPng.Image")));
-            this.tsbToPng.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbToPng.Name = "tsbToPng";
-            this.tsbToPng.Size = new System.Drawing.Size(68, 22);
-            this.tsbToPng.Text = "To PNG";
-            this.tsbToPng.Click += new System.EventHandler(this.tsbToPng_Click);
-            // 
-            // tsbToMinimalDFA
-            // 
-            this.tsbToMinimalDFA.Image = ((System.Drawing.Image)(resources.GetObject("tsbToMinimalDFA.Image")));
-            this.tsbToMinimalDFA.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbToMinimalDFA.Name = "tsbToMinimalDFA";
-            this.tsbToMinimalDFA.Size = new System.Drawing.Size(113, 22);
-            this.tsbToMinimalDFA.Text = "To Minimal DFA";
-            this.tsbToMinimalDFA.Click += new System.EventHandler(this.tsbToMinimalDFA_Click);
-            // 
-            // tsbToRegram
-            // 
-            this.tsbToRegram.Image = ((System.Drawing.Image)(resources.GetObject("tsbToRegram.Image")));
-            this.tsbToRegram.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbToRegram.Name = "tsbToRegram";
-            this.tsbToRegram.Size = new System.Drawing.Size(140, 22);
-            this.tsbToRegram.Text = "To Regulair Grammar";
-            this.tsbToRegram.Click += new System.EventHandler(this.tsbToRegram_Click);
             // 
             // lblTitle
             // 
@@ -98,13 +71,14 @@
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.Location = new System.Drawing.Point(12, 25);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(91, 17);
+            this.lblTitle.Size = new System.Drawing.Size(102, 17);
             this.lblTitle.TabIndex = 3;
-            this.lblTitle.Text = "Create DFA";
+            this.lblTitle.Text = "Create NDFA";
             // 
             // dgvStates
             // 
-            this.dgvStates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvStates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvStates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -113,7 +87,7 @@
             this.clnEndState});
             this.dgvStates.Location = new System.Drawing.Point(184, 58);
             this.dgvStates.Name = "dgvStates";
-            this.dgvStates.Size = new System.Drawing.Size(349, 82);
+            this.dgvStates.Size = new System.Drawing.Size(503, 82);
             this.dgvStates.TabIndex = 4;
             this.dgvStates.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStates_CellEndEdit);
             this.dgvStates.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStates_UserDeletedRow);
@@ -163,8 +137,8 @@
             // 
             // dgvTransitions
             // 
-            this.dgvTransitions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvTransitions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTransitions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTransitions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -173,9 +147,8 @@
             this.clnSymbol});
             this.dgvTransitions.Location = new System.Drawing.Point(12, 159);
             this.dgvTransitions.Name = "dgvTransitions";
-            this.dgvTransitions.Size = new System.Drawing.Size(521, 54);
+            this.dgvTransitions.Size = new System.Drawing.Size(675, 163);
             this.dgvTransitions.TabIndex = 7;
-            this.dgvTransitions.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvTransitions_DataError);
             // 
             // clnFromState
             // 
@@ -194,6 +167,9 @@
             // 
             // dgvAlphabet
             // 
+            this.dgvAlphabet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvAlphabet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAlphabet.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1});
@@ -211,11 +187,11 @@
             this.dataGridViewTextBoxColumn1.HeaderText = "Name";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
-            // FrmDFA
+            // FrmNDFA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 225);
+            this.ClientSize = new System.Drawing.Size(687, 334);
             this.Controls.Add(this.dgvAlphabet);
             this.Controls.Add(this.lblAlpabeth);
             this.Controls.Add(this.lblTitle);
@@ -224,8 +200,8 @@
             this.Controls.Add(this.dgvTransitions);
             this.Controls.Add(this.dgvStates);
             this.Controls.Add(this.toolStrip1);
-            this.Name = "FrmDFA";
-            this.Text = "Create DFA";
+            this.Name = "FrmNDFA";
+            this.Text = "Create NDFA";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStates)).EndInit();
@@ -255,6 +231,6 @@
         private System.Windows.Forms.DataGridView dgvAlphabet;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.ToolStripButton tsbToRegram;
-        private System.Windows.Forms.ToolStripButton tsbToMinimalDFA;
+        private System.Windows.Forms.ToolStripButton tsbToDFA;
     }
 }

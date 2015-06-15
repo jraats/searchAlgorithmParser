@@ -44,11 +44,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comboboxitem.cs" />
+    <Compile Include="DataTableColumnSource.cs" />
     <Compile Include="FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAbstractAutomate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAbstractAutomate.Designer.cs">
+      <DependentUpon>FrmAbstractAutomate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmImage.Designer.cs">
+      <DependentUpon>FrmImage.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmDFA.cs">
       <SubType>Form</SubType>
@@ -85,8 +99,14 @@
     <EmbeddedResource Include="FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmImage.resx">
+      <DependentUpon>FrmImage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDFA.resx">
+      <DependentUpon>FrmDFA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNDFA.resx">
       <DependentUpon>FrmNDFA.cs</DependentUpon>
@@ -112,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SearchAlgorithmParser\SearchAlgorithmParser.csproj">
+      <Project>{4480a644-f3f2-4f89-bdbf-3249943372f7}</Project>
+      <Name>SearchAlgorithmParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

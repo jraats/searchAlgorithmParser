@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmNDFA));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbToPng = new System.Windows.Forms.ToolStripButton();
-            this.dgvAlphabet = new System.Windows.Forms.DataGridView();
-            this.clnAlphabet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tsbToDFA = new System.Windows.Forms.ToolStripButton();
+            this.tsbToRegram = new System.Windows.Forms.ToolStripButton();
             this.lblTitle = new System.Windows.Forms.Label();
             this.dgvStates = new System.Windows.Forms.DataGridView();
             this.clnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,29 +45,23 @@
             this.clnFromState = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.clnToState = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.clnSymbol = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.dgvAlphabet = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransitions)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabet)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbToPng});
+            this.tsbToPng,
+            this.tsbToDFA,
+            this.tsbToRegram});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(357, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(533, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -78,33 +72,31 @@
             this.tsbToPng.Name = "tsbToPng";
             this.tsbToPng.Size = new System.Drawing.Size(68, 22);
             this.tsbToPng.Text = "To PNG";
+            this.tsbToPng.Click += new System.EventHandler(this.tsbToPng_Click);
             // 
-            // dgvAlphabet
+            // tsbToDFA
             // 
-            this.dgvAlphabet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvAlphabet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAlphabet.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.clnAlphabet});
-            this.dgvAlphabet.Location = new System.Drawing.Point(3, 41);
-            this.dgvAlphabet.Name = "dgvAlphabet";
-            this.dgvAlphabet.Size = new System.Drawing.Size(351, 57);
-            this.dgvAlphabet.TabIndex = 1;
-            this.dgvAlphabet.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlphabet_CellEndEdit);
-            this.dgvAlphabet.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvAlphabet_CellValidating);
-            this.dgvAlphabet.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvAlphabet_UserDeletedRow);
+            this.tsbToDFA.Image = ((System.Drawing.Image)(resources.GetObject("tsbToDFA.Image")));
+            this.tsbToDFA.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbToDFA.Name = "tsbToDFA";
+            this.tsbToDFA.Size = new System.Drawing.Size(66, 22);
+            this.tsbToDFA.Text = "To DFA";
+            this.tsbToDFA.Click += new System.EventHandler(this.tsbToDFA_Click);
             // 
-            // clnAlphabet
+            // tsbToRegram
             // 
-            this.clnAlphabet.HeaderText = "Alphabet";
-            this.clnAlphabet.Name = "clnAlphabet";
+            this.tsbToRegram.Image = ((System.Drawing.Image)(resources.GetObject("tsbToRegram.Image")));
+            this.tsbToRegram.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbToRegram.Name = "tsbToRegram";
+            this.tsbToRegram.Size = new System.Drawing.Size(140, 22);
+            this.tsbToRegram.Text = "To Regulair Grammar";
+            this.tsbToRegram.Click += new System.EventHandler(this.tsbToRegram_Click);
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(12, 0);
+            this.lblTitle.Location = new System.Drawing.Point(12, 25);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(102, 17);
             this.lblTitle.TabIndex = 3;
@@ -112,18 +104,20 @@
             // 
             // dgvStates
             // 
-            this.dgvStates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvStates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvStates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clnName,
             this.clnStartState,
             this.clnEndState});
-            this.dgvStates.Location = new System.Drawing.Point(3, 16);
+            this.dgvStates.Location = new System.Drawing.Point(184, 58);
             this.dgvStates.Name = "dgvStates";
-            this.dgvStates.Size = new System.Drawing.Size(351, 77);
+            this.dgvStates.Size = new System.Drawing.Size(349, 82);
             this.dgvStates.TabIndex = 4;
+            this.dgvStates.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStates_CellEndEdit);
+            this.dgvStates.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStates_UserDeletedRow);
+            this.dgvStates.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dgvStates_UserDeletingRow);
             // 
             // clnName
             // 
@@ -143,7 +137,7 @@
             // lblAlpabeth
             // 
             this.lblAlpabeth.AutoSize = true;
-            this.lblAlpabeth.Location = new System.Drawing.Point(12, 25);
+            this.lblAlpabeth.Location = new System.Drawing.Point(12, 42);
             this.lblAlpabeth.Name = "lblAlpabeth";
             this.lblAlpabeth.Size = new System.Drawing.Size(52, 13);
             this.lblAlpabeth.TabIndex = 5;
@@ -152,7 +146,7 @@
             // lblStates
             // 
             this.lblStates.AutoSize = true;
-            this.lblStates.Location = new System.Drawing.Point(12, 0);
+            this.lblStates.Location = new System.Drawing.Point(181, 42);
             this.lblStates.Name = "lblStates";
             this.lblStates.Size = new System.Drawing.Size(37, 13);
             this.lblStates.TabIndex = 6;
@@ -161,7 +155,7 @@
             // lblTransitions
             // 
             this.lblTransitions.AutoSize = true;
-            this.lblTransitions.Location = new System.Drawing.Point(12, 0);
+            this.lblTransitions.Location = new System.Drawing.Point(9, 143);
             this.lblTransitions.Name = "lblTransitions";
             this.lblTransitions.Size = new System.Drawing.Size(58, 13);
             this.lblTransitions.TabIndex = 8;
@@ -177,10 +171,11 @@
             this.clnFromState,
             this.clnToState,
             this.clnSymbol});
-            this.dgvTransitions.Location = new System.Drawing.Point(3, 16);
+            this.dgvTransitions.Location = new System.Drawing.Point(12, 159);
             this.dgvTransitions.Name = "dgvTransitions";
-            this.dgvTransitions.Size = new System.Drawing.Size(351, 85);
+            this.dgvTransitions.Size = new System.Drawing.Size(521, 54);
             this.dgvTransitions.TabIndex = 7;
+            this.dgvTransitions.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvTransitions_DataError);
             // 
             // clnFromState
             // 
@@ -197,71 +192,45 @@
             this.clnSymbol.HeaderText = "Symbol";
             this.clnSymbol.Name = "clnSymbol";
             // 
-            // splitContainer1
+            // dgvAlphabet
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.dgvAlphabet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAlphabet.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1});
+            this.dgvAlphabet.Location = new System.Drawing.Point(15, 58);
+            this.dgvAlphabet.Name = "dgvAlphabet";
+            this.dgvAlphabet.Size = new System.Drawing.Size(163, 82);
+            this.dgvAlphabet.TabIndex = 9;
+            this.dgvAlphabet.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlphabet_CellEndEdit);
+            this.dgvAlphabet.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvAlphabet_CellValidating);
+            this.dgvAlphabet.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvAlphabet_UserDeletedRow);
+            this.dgvAlphabet.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dgvAlphabet_UserDeletingRow);
             // 
-            // splitContainer1.Panel1
+            // dataGridViewTextBoxColumn1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.lblTitle);
-            this.splitContainer1.Panel1.Controls.Add(this.lblAlpabeth);
-            this.splitContainer1.Panel1.Controls.Add(this.dgvAlphabet);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(357, 309);
-            this.splitContainer1.SplitterDistance = 101;
-            this.splitContainer1.TabIndex = 9;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.lblStates);
-            this.splitContainer2.Panel1.Controls.Add(this.dgvStates);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.lblTransitions);
-            this.splitContainer2.Panel2.Controls.Add(this.dgvTransitions);
-            this.splitContainer2.Size = new System.Drawing.Size(357, 204);
-            this.splitContainer2.SplitterDistance = 96;
-            this.splitContainer2.TabIndex = 0;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
             // FrmNDFA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(357, 334);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(533, 225);
+            this.Controls.Add(this.dgvAlphabet);
+            this.Controls.Add(this.lblAlpabeth);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.lblStates);
+            this.Controls.Add(this.lblTransitions);
+            this.Controls.Add(this.dgvTransitions);
+            this.Controls.Add(this.dgvStates);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FrmNDFA";
             this.Text = "Create NDFA";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStates)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransitions)).EndInit();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,11 +240,9 @@
 
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbToPng;
-        private System.Windows.Forms.DataGridView dgvAlphabet;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.DataGridView dgvStates;
         private System.Windows.Forms.Label lblAlpabeth;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clnAlphabet;
         private System.Windows.Forms.DataGridViewTextBoxColumn clnName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn clnStartState;
         private System.Windows.Forms.DataGridViewCheckBoxColumn clnEndState;
@@ -285,7 +252,9 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn clnFromState;
         private System.Windows.Forms.DataGridViewComboBoxColumn clnToState;
         private System.Windows.Forms.DataGridViewComboBoxColumn clnSymbol;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.DataGridView dgvAlphabet;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.ToolStripButton tsbToRegram;
+        private System.Windows.Forms.ToolStripButton tsbToDFA;
     }
 }
