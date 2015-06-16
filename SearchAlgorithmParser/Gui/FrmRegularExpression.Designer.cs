@@ -31,10 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmRegularExpression));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbToNDFA = new System.Windows.Forms.ToolStripButton();
+            this.tsbVerifyMachine = new System.Windows.Forms.ToolStripButton();
+            this.tsbVerifyLanguage = new System.Windows.Forms.ToolStripButton();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblRegex = new System.Windows.Forms.Label();
             this.txtRegex = new System.Windows.Forms.TextBox();
-            this.btnRun = new System.Windows.Forms.Button();
             this.lblCurrent = new System.Windows.Forms.Label();
             this.lblParsedRegex = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
@@ -43,7 +44,9 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbToNDFA});
+            this.tsbToNDFA,
+            this.tsbVerifyMachine,
+            this.tsbVerifyLanguage});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(541, 25);
@@ -52,13 +55,36 @@
             // 
             // tsbToNDFA
             // 
+            this.tsbToNDFA.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbToNDFA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbToNDFA.Enabled = false;
             this.tsbToNDFA.Image = ((System.Drawing.Image)(resources.GetObject("tsbToNDFA.Image")));
             this.tsbToNDFA.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToNDFA.Name = "tsbToNDFA";
             this.tsbToNDFA.Size = new System.Drawing.Size(59, 22);
             this.tsbToNDFA.Text = "To NDFA";
             this.tsbToNDFA.Click += new System.EventHandler(this.tsbToNDFA_Click);
+            // 
+            // tsbVerifyMachine
+            // 
+            this.tsbVerifyMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbVerifyMachine.Image = ((System.Drawing.Image)(resources.GetObject("tsbVerifyMachine.Image")));
+            this.tsbVerifyMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbVerifyMachine.Name = "tsbVerifyMachine";
+            this.tsbVerifyMachine.Size = new System.Drawing.Size(90, 22);
+            this.tsbVerifyMachine.Text = "Verify Machine";
+            this.tsbVerifyMachine.Click += new System.EventHandler(this.tsbVerifyMachine_Click);
+            // 
+            // tsbVerifyLanguage
+            // 
+            this.tsbVerifyLanguage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbVerifyLanguage.Enabled = false;
+            this.tsbVerifyLanguage.Image = ((System.Drawing.Image)(resources.GetObject("tsbVerifyLanguage.Image")));
+            this.tsbVerifyLanguage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbVerifyLanguage.Name = "tsbVerifyLanguage";
+            this.tsbVerifyLanguage.Size = new System.Drawing.Size(96, 22);
+            this.tsbVerifyLanguage.Text = "Verify Language";
+            this.tsbVerifyLanguage.Click += new System.EventHandler(this.tsbVerifyLanguage_Click);
             // 
             // lblTitle
             // 
@@ -86,16 +112,6 @@
             this.txtRegex.Size = new System.Drawing.Size(197, 20);
             this.txtRegex.TabIndex = 6;
             // 
-            // btnRun
-            // 
-            this.btnRun.Location = new System.Drawing.Point(322, 47);
-            this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(75, 23);
-            this.btnRun.TabIndex = 7;
-            this.btnRun.Text = "Run";
-            this.btnRun.UseVisualStyleBackColor = true;
-            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
-            // 
             // lblCurrent
             // 
             this.lblCurrent.AutoSize = true;
@@ -121,7 +137,6 @@
             this.ClientSize = new System.Drawing.Size(541, 261);
             this.Controls.Add(this.lblParsedRegex);
             this.Controls.Add(this.lblCurrent);
-            this.Controls.Add(this.btnRun);
             this.Controls.Add(this.txtRegex);
             this.Controls.Add(this.lblRegex);
             this.Controls.Add(this.lblTitle);
@@ -142,8 +157,9 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblRegex;
         private System.Windows.Forms.TextBox txtRegex;
-        private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Label lblCurrent;
         private System.Windows.Forms.Label lblParsedRegex;
+        private System.Windows.Forms.ToolStripButton tsbVerifyMachine;
+        private System.Windows.Forms.ToolStripButton tsbVerifyLanguage;
     }
 }

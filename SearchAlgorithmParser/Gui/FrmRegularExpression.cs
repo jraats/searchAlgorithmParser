@@ -30,7 +30,18 @@ namespace Gui
             }
         }
 
-        private void btnRun_Click(object sender, EventArgs e)
+        private void tsbToNDFA_Click(object sender, EventArgs e)
+        {
+            if (this.regex != null)
+            {
+                NDFA<string, char> ndfa = SearchAlgorithmParser.Converter<string, char>.ConvertToNDFA(this.regex, 'e');
+                FrmNDFA frmNdfa = new FrmNDFA(ndfa);
+                frmNdfa.MdiParent = this.MdiParent;
+                frmNdfa.Show();
+            }
+        }
+
+        private void tsbVerifyMachine_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(this.txtRegex.Text))
                 return;
@@ -43,18 +54,13 @@ namespace Gui
             {
                 MessageBox.Show("Regex is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            tsbToNDFA.Enabled = true;
+            tsbVerifyLanguage.Enabled = true;
             updateGui();
         }
 
-        private void tsbToNDFA_Click(object sender, EventArgs e)
+        private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
-            if (this.regex != null)
-            {
-                NDFA<string, char> ndfa = SearchAlgorithmParser.Converter<string, char>.ConvertToNDFA(this.regex, 'e');
-                FrmNDFA frmNdfa = new FrmNDFA(ndfa);
-                frmNdfa.MdiParent = this.MdiParent;
-                frmNdfa.Show();
-            }
         }
     }
 }

@@ -224,6 +224,10 @@ namespace Gui
                 return null;
             }
 
+            tsbToDFA.Enabled = true;
+            tsbToPng.Enabled = true;
+            tsbToRegram.Enabled = true;
+            tsbVerifyLanguage.Enabled = true;
             return ndfa;
         }
 
@@ -274,6 +278,18 @@ namespace Gui
         }
 
         private void dgvTransitions_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+
+        }
+
+        private void tsbVerifyMachine_Click(object sender, EventArgs e)
+        {
+            NDFA<string, char> ndfa = getNDFA();
+            if (ndfa == null)
+                return;
+        }
+
+        private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
 
         }

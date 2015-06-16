@@ -229,6 +229,9 @@ namespace Gui
                 return null;
             }
 
+            tsbToDFA.Enabled = true;
+            tsbToNDFA.Enabled = true;
+            tsbVerifyLanguage.Enabled = true;
             return regram;
         }
 
@@ -254,6 +257,18 @@ namespace Gui
             FrmNDFA frmNdfa = new FrmNDFA(ndfa);
             frmNdfa.MdiParent = this.MdiParent;
             frmNdfa.Show();
+        }
+
+        private void tsbVerifyMachine_Click(object sender, EventArgs e)
+        {
+            Regram<string, char> regram = getRegram();
+            if (regram == null)
+                return;
+        }
+
+        private void tsbVerifyLanguage_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

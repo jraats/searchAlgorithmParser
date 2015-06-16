@@ -348,6 +348,11 @@ namespace Gui
                 tsbToNot.Enabled = false;
                 return;
             }
+
+            dfa.Not();
+            FrmDFA frmDfa = new FrmDFA(dfa);
+            frmDfa.MdiParent = this.MdiParent;
+            frmDfa.Show();
         }
 
         private void tsbVerifyMachine_Click(object sender, EventArgs e)
@@ -361,12 +366,7 @@ namespace Gui
 
         private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
-            DFA<string, char> dfa = getDFA();
-            if (dfa == null)
-            {
-                tsbVerifyMachine.Enabled = false;
-                return;
-            }
+
         }
 
     }
