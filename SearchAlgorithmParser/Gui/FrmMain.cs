@@ -15,6 +15,7 @@ namespace Gui
         public FrmMain()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -29,15 +30,17 @@ namespace Gui
 
         private void regularExpressionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmRegularExpression regulairExpression = new FrmRegularExpression();
-            regulairExpression.MdiParent = this;
-            regulairExpression.Show();
+            FrmRegularExpression regularExpression = new FrmRegularExpression();
+            regularExpression.MdiParent = this;
+            regularExpression.WindowState = FormWindowState.Maximized;
+            regularExpression.Show();
         }
 
         private void regularGrammarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRegularGrammar regularGrammar = new FrmRegularGrammar();
             regularGrammar.MdiParent = this;
+            regularGrammar.WindowState = FormWindowState.Maximized;
             regularGrammar.Show();
         }
 
@@ -45,6 +48,7 @@ namespace Gui
         {
             FrmNDFA ndfa = new FrmNDFA();
             ndfa.MdiParent = this;
+            ndfa.WindowState = FormWindowState.Maximized;
             ndfa.Show();
         }
 
@@ -52,6 +56,7 @@ namespace Gui
         {
             FrmDFA dfa = new FrmDFA();
             dfa.MdiParent = this;
+            dfa.WindowState = FormWindowState.Maximized;
             dfa.Show();
         }
     }

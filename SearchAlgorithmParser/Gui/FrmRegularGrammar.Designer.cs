@@ -211,7 +211,7 @@
             this.Controls.Add(this.dgvStates);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FrmRegularGrammar";
-            this.Text = "Create Regulair Grammar";
+            this.Text = "Create Regular Grammar";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStates)).EndInit();

@@ -61,9 +61,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    regramString.Append(state + "}, {");
+                    regramString.Append(state);
                 }
             }
+
+            regramString.Append("}, {");
 
             foreach (S character in this.Alphabet)
             {
@@ -73,9 +75,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    regramString.Append(character + "}, {\n");
+                    regramString.Append(character);
                 }
             }
+
+            regramString.Append("}, {\n");
 
             foreach (T fromState in this.states.Keys)
             {
