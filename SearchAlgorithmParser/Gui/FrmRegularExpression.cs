@@ -61,6 +61,24 @@ namespace Gui
 
         private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
+            if (this.regex != null)
+            {
+                NDFA<string, char> ndfa = SearchAlgorithmParser.Converter<string, char>.ConvertToNDFA(this.regex, 'e');
+                if (ndfa == null)
+                {
+                    return;
+                }
+                string value = Prompt.ShowDialog("Fill in your text", "Validate language");
+
+                if (ndfa.Validate(value.ToArray()))
+                {
+                    MessageBox.Show("This string is valid", "Success", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("This string is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

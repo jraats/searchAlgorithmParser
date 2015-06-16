@@ -366,7 +366,21 @@ namespace Gui
 
         private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
+            DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+            {
+                return;
+            }
+            string value = Prompt.ShowDialog("Fill in your text", "Validate language");
 
+            if (dfa.Validate(value.ToArray()))
+            {
+                MessageBox.Show("This string is valid", "Success", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
+            else
+            {
+                MessageBox.Show("This string is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

@@ -44,9 +44,10 @@ namespace Gui
 
         }
 
-        public FrmRegularGrammar(Grammar<string, char> ndfa) : this()
+        public FrmRegularGrammar(Grammar<string, char> ndfa)
+            : this()
         {
-            foreach(char c in ndfa.Alphabet)
+            foreach (char c in ndfa.Alphabet)
             {
                 DataGridViewRow row = new DataGridViewRow();
                 row.Cells.Add(new DataGridViewTextBoxCell());
@@ -72,9 +73,72 @@ namespace Gui
             {
                 Dictionary<char, HashSet<string>> toState = ndfa.GetStates(state);
 
-                foreach(char key in toState.Keys)
+                foreach (char key in toState.Keys)
                 {
                     foreach (string toStateName in toState[key])
+                    {
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.Cells.Add(new DataGridViewComboBoxCell());
+                        row.Cells.Add(new DataGridViewComboBoxCell());
+                        row.Cells.Add(new DataGridViewComboBoxCell());
+                        this.dgvTransitions.Rows.Add(row);
+
+                        DataGridViewRow tRow = this.dgvTransitions.Rows[this.dgvTransitions.Rows.Count - 2];
+
+                        BindingSource clm1BS = new BindingSource();
+                        clm1BS.DataSource = stateSource;
+
+                        ((DataGridViewComboBoxCell)tRow.Cells[0]).DataSource = clm1BS;
+                        ((DataGridViewComboBoxCell)tRow.Cells[0]).ValueType = typeof(char);
+                        ((DataGridViewComboBoxCell)tRow.Cells[0]).Value = state.ToString();
+
+                        BindingSource clm2BS = new BindingSource();
+                        clm2BS.DataSource = stateSource;
+                        ((DataGridViewComboBoxCell)tRow.Cells[1]).DataSource = clm2BS;
+                        ((DataGridViewComboBoxCell)tRow.Cells[1]).ValueType = typeof(string);
+                        ((DataGridViewComboBoxCell)tRow.Cells[1]).Value = toStateName.ToString();
+
+                        BindingSource clm3BS = new BindingSource();
+                        clm3BS.DataSource = alphabetSource;
+                        ((DataGridViewComboBoxCell)tRow.Cells[2]).DataSource = clm3BS;
+                        ((DataGridViewComboBoxCell)tRow.Cells[2]).ValueType = typeof(char);
+                        ((DataGridViewComboBoxCell)tRow.Cells[2]).Value = key;
+                    }
+                }
+            }
+        }
+
+        public FrmRegularGrammar(Grammar<MultiState<string>, char> ndfa) : this()
+        {
+            foreach(char c in ndfa.Alphabet)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells[0].Value = c;
+                this.dgvAlphabet.Rows.Add(row);
+                this.alphabetSource.PosibleChange(ListChangedType.ItemAdded, this.dgvAlphabet.Rows.Count);
+            }
+
+            foreach (MultiState<string> state in ndfa.GetStates())
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells.Add(new DataGridViewCheckBoxCell());
+                row.Cells.Add(new DataGridViewCheckBoxCell());
+                row.Cells[0].Value = state.ToString();
+                row.Cells[1].Value = (ndfa.StartState.Equals(state));
+                row.Cells[2].Value = ndfa.EndStates.Contains(state);
+                this.dgvStates.Rows.Add(row);
+                this.stateSource.PosibleChange(ListChangedType.ItemAdded, this.dgvStates.Rows.Count);
+            }
+
+            foreach (MultiState<string> state in ndfa.GetStates())
+            {
+                Dictionary<char, HashSet<MultiState<string>>> toState = ndfa.GetStates(state);
+
+                foreach(char key in toState.Keys)
+                {
+                    foreach (MultiState<string> toStateName in toState[key])
                     {
                         DataGridViewRow row = new DataGridViewRow();
                         row.Cells.Add(new DataGridViewComboBoxCell());
@@ -268,7 +332,34 @@ namespace Gui
 
         private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
+            Regram<string, char> regram = getRegram();
+            if (regram == null)
+            {
+                return;
+            }
+            string value = Prompt.ShowDialog("Fill in your text", "Validate language");
 
+            if (regram.Validate(value.ToArray()))
+            {
+                MessageBox.Show("This string is valid", "Success", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
+            else
+            {
+                MessageBox.Show("This string is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void stbConsole_Click(object sender, EventArgs e)
+        {
+            Regram<string, char> regram = getRegram();
+            if (regram == null)
+            {
+                return;
+            }
+
+            FrmConsole c = new FrmConsole(regram.ToString());
+            c.MdiParent = this.MdiParent;
+            c.Show();
         }
     }
 }
