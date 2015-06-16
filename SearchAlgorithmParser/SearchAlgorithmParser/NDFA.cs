@@ -235,9 +235,17 @@ namespace SearchAlgorithmParser
                 streamWriter.Write(';');
 
             streamWriter.WriteLine();
+            streamWriter.WriteLine("node [shape = none]; start;");
+
+            streamWriter.WriteLine();
             streamWriter.WriteLine("node [shape = circle];");
             foreach (T fromState in this.states.Keys)
             {
+                if (this.StartStates.Contains(fromState))
+                {
+                    streamWriter.WriteLine("start -> \"" + fromState.ToString() + "\" [ label= \"\" ];");
+                }
+
                 Dictionary<S, HashSet<T>> newState = this.states[fromState];
                 foreach (S symbol in newState.Keys)
                 {

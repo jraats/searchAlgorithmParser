@@ -372,7 +372,7 @@ namespace SearchAlgorithmParser
             StreamWriter streamWriter = new StreamWriter(fileStream);
             streamWriter.WriteLine(@"digraph finite_state_machine {");
             streamWriter.WriteLine("rankdir=LR;");
-            streamWriter.WriteLine("size=\"8,5\"");        
+            streamWriter.WriteLine("size=\"8,5\"");
             streamWriter.WriteLine("node [shape = doublecircle];");
             foreach (T state in this.EndStates)
             {
@@ -382,9 +382,17 @@ namespace SearchAlgorithmParser
                 streamWriter.Write(';');
 
             streamWriter.WriteLine();
+            streamWriter.WriteLine("node [shape = none]; start;");
+
+            streamWriter.WriteLine();
             streamWriter.WriteLine("node [shape = circle];");
             foreach (T fromState in this.states.Keys)
             {
+                if (this.StartState.Equals(fromState))
+                {
+                    streamWriter.WriteLine("start -> \"" + fromState.ToString() + "\" [ label= \"\" ];");
+                }
+
                 Dictionary<S, T> newState = this.states[fromState];
                 foreach (S symbol in newState.Keys)
                 {

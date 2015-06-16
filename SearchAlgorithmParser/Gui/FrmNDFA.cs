@@ -259,10 +259,10 @@ namespace Gui
 
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.AddExtension = true;
-            dialog.DefaultExt = ".png";
-            dialog.Filter = "*.png|.png";
-            dialog.FilterIndex = 0;
+            dialog.DefaultExt = "png";
+            dialog.Filter = ".png|*.png";
             dialog.OverwritePrompt = true;
+            dialog.ValidateNames = true;
             if(dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ndfa.MakePngFile(dialog.FileName);
