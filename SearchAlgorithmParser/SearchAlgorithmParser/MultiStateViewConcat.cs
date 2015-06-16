@@ -22,7 +22,8 @@ namespace SearchAlgorithmParser
 
             StringBuilder builder = new StringBuilder();
             bool isFirst = true;
-            foreach (T subState in state)
+            IOrderedEnumerable<T> enumerator = state.OrderBy((t) => t);
+            foreach (T subState in enumerator)
             {
                 if(!isFirst)
                     builder.Append(Glue);

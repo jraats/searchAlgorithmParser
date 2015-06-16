@@ -21,7 +21,7 @@ namespace Gui
         {
             InitializeComponent();
 
-            alphabetSource = new DataTableColumnSource<char>(ref this.dgvAlphabet, 0);
+            alphabetSource = new DataTableColumnSource<char>(ref this.dgvAlphabet, 0, new char[]{'e'});
             stateSource = new DataTableColumnSource<string>(ref this.dgvStates, 0);
 
             DataGridViewComboBoxColumn column = (DataGridViewComboBoxColumn)this.dgvTransitions.Columns[0];
@@ -191,7 +191,7 @@ namespace Gui
 
         private Regram<string, char> getRegram()
         {
-            Regram<string, char> regram = new Regram<string, char>(this.alphabetSource.Cast<char>().ToArray());
+            Regram<string, char> regram = new Regram<string, char>(this.alphabetSource.GetTableArray());
 
             foreach (DataGridViewRow dataRow in this.dgvTransitions.Rows)
             {
@@ -210,8 +210,8 @@ namespace Gui
                     continue;
 
                 string name = dataRow.Cells[0].Value.ToString();
-                bool startState = !((dataRow.Cells[1]).Value == null);
-                bool endState = !((dataRow.Cells[2]).Value == null);
+                bool startState = (((dataRow.Cells[1]).Value == null) ? false : (bool)(dataRow.Cells[1]).Value);
+                bool endState = (((dataRow.Cells[2]).Value == null) ? false : (bool)(dataRow.Cells[2]).Value);
 
                 if (startState)
                 {

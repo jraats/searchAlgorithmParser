@@ -84,9 +84,9 @@
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.Location = new System.Drawing.Point(12, 25);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(193, 17);
+            this.lblTitle.Size = new System.Drawing.Size(189, 17);
             this.lblTitle.TabIndex = 3;
-            this.lblTitle.Text = "Create Regulair Grammar";
+            this.lblTitle.Text = "Create Regular Grammar";
             // 
             // dgvStates
             // 

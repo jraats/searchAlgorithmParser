@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -9,12 +10,18 @@ namespace Gui
         public event ListChangedEventHandler ListChanged;
         public DataGridView dataTable { get; set; }
         public int column { get; set; }
-        
+        public T[] additional;
 
-        public DataTableColumnSource(ref DataGridView dataTable, int column)
+
+        public DataTableColumnSource(ref DataGridView dataTable, int column) :this(ref dataTable, column, new T[0])
+        {
+
+        }
+        public DataTableColumnSource(ref DataGridView dataTable, int column, T[] additional)
         {
             this.dataTable = dataTable;
             this.column = column;
+            this.additional = additional;
         }
 
         public void PosibleChange(ListChangedType type, int index)
@@ -150,6 +157,11 @@ namespace Gui
         {
             get
             {
+                if (index < this.additional.Length)
+                    return this.additional[index];
+
+                index -= additional.Length;
+
                 if (this.dataTable.Rows[index].Cells[this.column].Value == null)
                     return null;
 
@@ -171,7 +183,7 @@ namespace Gui
         {
             get
             {
-                return this.dataTable.Rows.Count -1;
+                return this.dataTable.Rows.Count -1 + additional.Length;
             }
         }
 
@@ -183,6 +195,15 @@ namespace Gui
         public object SyncRoot
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public T[] GetTableArray()
+        {
+            List<T> returnList = new List<T>();
+            int c = Count;
+            for(int i = this.additional.Length; i < c; i++)
+                returnList.Add((T)this[i]);
+            return returnList.ToArray();
         }
 
         public System.Collections.IEnumerator GetEnumerator()

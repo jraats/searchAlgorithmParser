@@ -65,6 +65,7 @@ namespace SearchAlgorithmParser
             regex.Root.Convert(regex.StateCreater, startState, ref endStr, ndfa);
             ndfa.StartState = startState;
             ndfa.EndStates.Add(endStr);
+            ndfa.AddState(endStr);
             return ndfa;
         }
 
