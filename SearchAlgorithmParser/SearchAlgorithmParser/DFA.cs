@@ -372,7 +372,7 @@ namespace SearchAlgorithmParser
             StreamWriter streamWriter = new StreamWriter(fileStream);
             streamWriter.WriteLine(@"digraph finite_state_machine {");
             streamWriter.WriteLine("rankdir=LR;");
-            streamWriter.WriteLine("size=\"8,5\"");
+            streamWriter.WriteLine("size=\"8,5\"");        
             streamWriter.WriteLine("node [shape = doublecircle];");
             foreach (T state in this.EndStates)
             {
