@@ -59,5 +59,31 @@ namespace Gui
             dfa.WindowState = FormWindowState.Maximized;
             dfa.Show();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem.Equals(this.helpToolStripMenuItem))
+            {
+                while (this.helpToolStripMenuItem.DropDownItems.Count > 1)
+                {
+                    this.helpToolStripMenuItem.DropDownItems.RemoveAt(1);
+                }
+                this.helpToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+
+                foreach(Form item in this.MdiChildren) {
+                    this.helpToolStripMenuItem.DropDownItems.Add("*" + item.Text);
+                    this.helpToolStripMenuItem.DropDownItems[this.helpToolStripMenuItem.DropDownItems.Count - 1].Click += mdiChild_ItemClicked;
+                }
+            }
+        }
+
+        private void mdiChild_ItemClicked(object sender, EventArgs e)
+        {
+            int index = this.helpToolStripMenuItem.DropDownItems.IndexOf((ToolStripItem)sender);
+            if (index == -1)
+                return;
+
+            this.MdiChildren[index - 2].Focus();
+        }
     }
 }

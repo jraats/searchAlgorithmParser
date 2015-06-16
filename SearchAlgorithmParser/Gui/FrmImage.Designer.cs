@@ -49,7 +49,7 @@
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.picture);
             this.Name = "FrmImage";
-            this.Text = "FrmImage";
+            this.Text = "Image";
             this.Load += new System.EventHandler(this.FrmImage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
             this.ResumeLayout(false);
