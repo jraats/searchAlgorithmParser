@@ -321,21 +321,28 @@ namespace SearchAlgorithmParser
 
         private static HashSet<T> getAllEpsilonStatesFromState(Grammar<T, S> grammar, T from, S epsilon)
         {
+            return getAllEpsilonStatesFromState(grammar, from, epsilon, new HashSet<T>(new T[]{from}));
+        }
+
+        private static HashSet<T> getAllEpsilonStatesFromState(Grammar<T, S> grammar, T from, S epsilon, HashSet<T> alreadyFound)
+        {
             Dictionary<S, HashSet<T>> states = grammar.GetStates(from);
-            HashSet<T> newStates = new HashSet<T>();
 
             if (states.ContainsKey(epsilon))
             {
                 foreach (T otherState in states[epsilon])
                 {
-                    newStates.Add(otherState);
-                    foreach(T subState in getAllEpsilonStatesFromState(grammar, otherState, epsilon)) {
-                        newStates.Add(subState);
+                    if (alreadyFound.Contains(otherState))
+                        continue;
+
+                    alreadyFound.Add(otherState);
+                    foreach(T subState in getAllEpsilonStatesFromState(grammar, otherState, epsilon, alreadyFound)) {
+                        alreadyFound.Add(subState);
                     }
                 }
             }
 
-            return newStates;
+            return alreadyFound;
         }
     }
 }
