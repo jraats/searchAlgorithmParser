@@ -282,12 +282,19 @@ namespace Gui
                 return null;
             }
 
+            tsbVerifyLanguage.Enabled = true;
+            tsbToMinimalDFA.Enabled = true;
+            tsbToNot.Enabled = true;
+            tsbToPng.Enabled = true;
+            tsbToRegram.Enabled = true;
             return dfa;
         }
 
         private void tsbToMinimalDFA_Click(object sender, EventArgs e)
         {
             DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+                return;
             dfa.MinimaliseDFA();
             FrmDFA frmDfa = new FrmDFA(dfa);
             frmDfa.MdiParent = this.MdiParent;
@@ -332,5 +339,35 @@ namespace Gui
         {
 
         }
+
+        private void tsbToNot_Click(object sender, EventArgs e)
+        {
+            DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+            {
+                tsbToNot.Enabled = false;
+                return;
+            }
+        }
+
+        private void tsbVerifyMachine_Click(object sender, EventArgs e)
+        {
+            DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+            {
+                return;
+            }
+        }
+
+        private void tsbVerifyLanguage_Click(object sender, EventArgs e)
+        {
+            DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+            {
+                tsbVerifyMachine.Enabled = false;
+                return;
+            }
+        }
+
     }
 }

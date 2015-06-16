@@ -67,28 +67,31 @@
             // 
             // tsbToPng
             // 
+            this.tsbToPng.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbToPng.Image = ((System.Drawing.Image)(resources.GetObject("tsbToPng.Image")));
             this.tsbToPng.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToPng.Name = "tsbToPng";
-            this.tsbToPng.Size = new System.Drawing.Size(68, 22);
+            this.tsbToPng.Size = new System.Drawing.Size(52, 22);
             this.tsbToPng.Text = "To PNG";
             this.tsbToPng.Click += new System.EventHandler(this.tsbToPng_Click);
             // 
             // tsbToDFA
             // 
+            this.tsbToDFA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbToDFA.Image = ((System.Drawing.Image)(resources.GetObject("tsbToDFA.Image")));
             this.tsbToDFA.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToDFA.Name = "tsbToDFA";
-            this.tsbToDFA.Size = new System.Drawing.Size(66, 22);
+            this.tsbToDFA.Size = new System.Drawing.Size(50, 22);
             this.tsbToDFA.Text = "To DFA";
             this.tsbToDFA.Click += new System.EventHandler(this.tsbToDFA_Click);
             // 
             // tsbToRegram
             // 
+            this.tsbToRegram.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbToRegram.Image = ((System.Drawing.Image)(resources.GetObject("tsbToRegram.Image")));
             this.tsbToRegram.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToRegram.Name = "tsbToRegram";
-            this.tsbToRegram.Size = new System.Drawing.Size(137, 22);
+            this.tsbToRegram.Size = new System.Drawing.Size(121, 22);
             this.tsbToRegram.Text = "To Regular Grammar";
             this.tsbToRegram.Click += new System.EventHandler(this.tsbToRegram_Click);
             // 

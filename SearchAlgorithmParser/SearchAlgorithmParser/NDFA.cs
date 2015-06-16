@@ -106,94 +106,95 @@ namespace SearchAlgorithmParser
             }
             return newState;
         }
-        public void Or(NDFA<T, S> ndfa)
-        {
-            // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET) ?
-            MergeOperation(ndfa, OperationType.OR);
-        }
 
-        public void And(NDFA<T, S> ndfa)
-        {
-            // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET) ?
-            MergeOperation(ndfa, OperationType.AND);
-        }
+        //public void Or(NDFA<T, S> ndfa)
+        //{
+        //    // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET) ?
+        //    MergeOperation(ndfa, OperationType.OR);
+        //}
 
-        private void MergeOperation(NDFA<T, S> ndfa, OperationType type)
-        {
-            List<T> oldStartStates = new List<T>(this.StartStates);
-            List<T> oldEndstates = new List<T>(this.EndStates);
-            Dictionary<T, Dictionary<S, HashSet<T>>> oldStates = new Dictionary<T, Dictionary<S, HashSet<T>>>(this.states);
-            Dictionary<List<T>, Dictionary<S, List<T>>> newCombinedTransitions = new Dictionary<List<T>, Dictionary<S, List<T>>>();
+        //public void And(NDFA<T, S> ndfa)
+        //{
+        //    // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET) ?
+        //    MergeOperation(ndfa, OperationType.AND);
+        //}
 
-            this.states = new Dictionary<T, Dictionary<S, HashSet<T>>>();
-            this.EndStates.Clear();
-            this.StartStates.Clear();
+        //private void MergeOperation(NDFA<T, S> ndfa, OperationType type)
+        //{
+        //    List<T> oldStartStates = new List<T>(this.StartStates);
+        //    List<T> oldEndstates = new List<T>(this.EndStates);
+        //    Dictionary<T, Dictionary<S, HashSet<T>>> oldStates = new Dictionary<T, Dictionary<S, HashSet<T>>>(this.states);
+        //    Dictionary<List<T>, Dictionary<S, List<T>>> newCombinedTransitions = new Dictionary<List<T>, Dictionary<S, List<T>>>();
 
-            foreach(T startState in oldStartStates)
-            {
-                foreach(T secondaryStartState in ndfa.StartStates)
-                {
-                    this.StartStates.Add(concatStates(new List<T>( new T[] {startState, secondaryStartState})));
-                }
-            }
+        //    this.states = new Dictionary<T, Dictionary<S, HashSet<T>>>();
+        //    this.EndStates.Clear();
+        //    this.StartStates.Clear();
 
-            foreach (T transitionFromState in oldStates.Keys)
-            {
-                foreach (T secondaryTransitionFromState in ndfa.states.Keys)
-                {
-                    List<T> newFromStateSet = new List<T>();
+        //    foreach(T startState in oldStartStates)
+        //    {
+        //        foreach(T secondaryStartState in ndfa.StartStates)
+        //        {
+        //            this.StartStates.Add(concatStates(new List<T>( new T[] {startState, secondaryStartState})));
+        //        }
+        //    }
 
-                    newFromStateSet.Add(transitionFromState);
-                    newFromStateSet.Add(secondaryTransitionFromState);
+        //    foreach (T transitionFromState in oldStates.Keys)
+        //    {
+        //        foreach (T secondaryTransitionFromState in ndfa.states.Keys)
+        //        {
+        //            List<T> newFromStateSet = new List<T>();
 
-                    switch (type)
-                    {
-                        case OperationType.AND:
-                            if (oldEndstates.Contains(transitionFromState) && ndfa.EndStates.Contains(secondaryTransitionFromState))
-                            {
-                                this.EndStates.Add(concatStates(new List<T>(new T[] { transitionFromState, secondaryTransitionFromState })));
-                            }
-                            break;
-                        case OperationType.OR:
-                            if (oldEndstates.Contains(transitionFromState) || ndfa.EndStates.Contains(secondaryTransitionFromState))
-                            {
-                                this.EndStates.Add(concatStates(new List<T>(new T[] { transitionFromState, secondaryTransitionFromState })));
-                            }
-                            break;
-                        default:
-                            break;
-                    }
+        //            newFromStateSet.Add(transitionFromState);
+        //            newFromStateSet.Add(secondaryTransitionFromState);
 
-                    if (!newCombinedTransitions.ContainsKey(newFromStateSet)) newCombinedTransitions.Add(newFromStateSet, new Dictionary<S, List<T>>());
+        //            switch (type)
+        //            {
+        //                case OperationType.AND:
+        //                    if (oldEndstates.Contains(transitionFromState) && ndfa.EndStates.Contains(secondaryTransitionFromState))
+        //                    {
+        //                        this.EndStates.Add(concatStates(new List<T>(new T[] { transitionFromState, secondaryTransitionFromState })));
+        //                    }
+        //                    break;
+        //                case OperationType.OR:
+        //                    if (oldEndstates.Contains(transitionFromState) || ndfa.EndStates.Contains(secondaryTransitionFromState))
+        //                    {
+        //                        this.EndStates.Add(concatStates(new List<T>(new T[] { transitionFromState, secondaryTransitionFromState })));
+        //                    }
+        //                    break;
+        //                default:
+        //                    break;
+        //            }
 
-                    foreach (S transitionSymbol in oldStates[transitionFromState].Keys)
-                    {
-                        List<T> newToStateSet = new List<T>();
+        //            if (!newCombinedTransitions.ContainsKey(newFromStateSet)) newCombinedTransitions.Add(newFromStateSet, new Dictionary<S, List<T>>());
 
-                        foreach(T transitionToState in oldStates[transitionFromState][transitionSymbol])
-                        {
-                            newToStateSet.Add(transitionToState);
-                        }
-                        foreach (T secondaryTransitionToState in ndfa.states[transitionFromState][transitionSymbol])
-                        {
-                            newToStateSet.Add(secondaryTransitionToState);
-                        }
+        //            foreach (S transitionSymbol in oldStates[transitionFromState].Keys)
+        //            {
+        //                List<T> newToStateSet = new List<T>();
 
-                        if (!newCombinedTransitions[newFromStateSet].ContainsKey(transitionSymbol)) newCombinedTransitions[newFromStateSet].Add(transitionSymbol, new List<T>(newToStateSet));
-                    }
-                }
-            }
+        //                foreach(T transitionToState in oldStates[transitionFromState][transitionSymbol])
+        //                {
+        //                    newToStateSet.Add(transitionToState);
+        //                }
+        //                foreach (T secondaryTransitionToState in ndfa.states[transitionFromState][transitionSymbol])
+        //                {
+        //                    newToStateSet.Add(secondaryTransitionToState);
+        //                }
 
-            Console.WriteLine("Combined transitions: " + newCombinedTransitions.Count());
+        //                if (!newCombinedTransitions[newFromStateSet].ContainsKey(transitionSymbol)) newCombinedTransitions[newFromStateSet].Add(transitionSymbol, new List<T>(newToStateSet));
+        //            }
+        //        }
+        //    }
 
-            foreach (List<T> transitionFromState in newCombinedTransitions.Keys)
-            {
-                foreach (S transitionSymbol in newCombinedTransitions[transitionFromState].Keys)
-                {
-                    this.AddTransition(concatStates(transitionFromState), concatStates(newCombinedTransitions[transitionFromState][transitionSymbol]), transitionSymbol);
-                }
-            }
-        }
+        //    Console.WriteLine("Combined transitions: " + newCombinedTransitions.Count());
+
+        //    foreach (List<T> transitionFromState in newCombinedTransitions.Keys)
+        //    {
+        //        foreach (S transitionSymbol in newCombinedTransitions[transitionFromState].Keys)
+        //        {
+        //            this.AddTransition(concatStates(transitionFromState), concatStates(newCombinedTransitions[transitionFromState][transitionSymbol]), transitionSymbol);
+        //        }
+        //    }
+        //}
 
         public void Not()
         {
