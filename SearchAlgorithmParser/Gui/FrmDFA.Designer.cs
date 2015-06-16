@@ -88,8 +88,8 @@
             this.tsbToRegram.Image = ((System.Drawing.Image)(resources.GetObject("tsbToRegram.Image")));
             this.tsbToRegram.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToRegram.Name = "tsbToRegram";
-            this.tsbToRegram.Size = new System.Drawing.Size(140, 22);
-            this.tsbToRegram.Text = "To Regulair Grammar";
+            this.tsbToRegram.Size = new System.Drawing.Size(137, 22);
+            this.tsbToRegram.Text = "To Regular Grammar";
             this.tsbToRegram.Click += new System.EventHandler(this.tsbToRegram_Click);
             // 
             // lblTitle
