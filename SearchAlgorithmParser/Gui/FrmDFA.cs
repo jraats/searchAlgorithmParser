@@ -366,7 +366,11 @@ namespace Gui
 
         private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
-
+            DFA<string, char> dfa = getDFA();
+            if (dfa == null)
+            {
+                return;
+            }
         }
 
     }

@@ -150,16 +150,24 @@ namespace SearchAlgorithmParser
             ToDFA(Reverse(ToDFA(Reverse(this))));
         }
 
-        public void Or(DFA<T, S> dfa)
+        public bool Or(DFA<T, S> dfa)
         {
-            // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET) ?
-            MergeOperation(dfa, OperationType.OR);
+            if(this.Alphabet.Equals(dfa.Alphabet))
+            {
+                MergeOperation(dfa, OperationType.OR);
+                return true;
+            }
+            return false;
         }
 
-        public void And(DFA<T, S> dfa)
+        public bool And(DFA<T, S> dfa)
         {
-            // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET) ?
-            MergeOperation(dfa, OperationType.AND);
+            if (this.Alphabet.Equals(dfa.Alphabet))
+            {
+                MergeOperation(dfa, OperationType.AND);
+                return true;
+            }
+            return false;
         }
 
         private void MergeOperation(DFA<T, S> dfa, OperationType type)
