@@ -249,8 +249,8 @@ namespace Gui
             if (ndfa == null)
                 return;
 
-            Regram<MultiState<string>, char> dfa = SearchAlgorithmParser.Converter<string, char>.ConvertToRegram(ndfa, new SearchAlgorithmParser.MultiStateViewConcat<string>("", "O"));
-            FrmRegularGrammar frmRegram = new FrmRegularGrammar(ndfa);
+            Regram<MultiState<string>, char> regram = SearchAlgorithmParser.Converter<string, char>.ConvertToRegram(ndfa, new SearchAlgorithmParser.MultiStateViewConcat<string>("", "O"));
+            FrmRegularGrammar frmRegram = new FrmRegularGrammar(regram);
             frmRegram.MdiParent = this.MdiParent;
             frmRegram.Show();
         }
@@ -291,7 +291,21 @@ namespace Gui
 
         private void tsbVerifyLanguage_Click(object sender, EventArgs e)
         {
+            NDFA<string, char> ndfa = getNDFA();
+            if (ndfa == null)
+            {
+                return;
+            }
+            string value = Prompt.ShowDialog("Fill in your text", "Validate language");
 
+            if (ndfa.Validate(value.ToArray()))
+            {
+                MessageBox.Show("This string is valid", "Success", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
+            else
+            {
+                MessageBox.Show("This string is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
