@@ -34,6 +34,7 @@
             this.tsbToDFA = new System.Windows.Forms.ToolStripButton();
             this.tsbToNDFA = new System.Windows.Forms.ToolStripButton();
             this.tsbVerifyLanguage = new System.Windows.Forms.ToolStripButton();
+            this.tsbConsole = new System.Windows.Forms.ToolStripButton();
             this.lblTitle = new System.Windows.Forms.Label();
             this.dgvStates = new System.Windows.Forms.DataGridView();
             this.clnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,7 +49,6 @@
             this.clnSymbol = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvAlphabet = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.stbConsole = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransitions)).BeginInit();
@@ -62,7 +62,7 @@
             this.tsbToDFA,
             this.tsbToNDFA,
             this.tsbVerifyLanguage,
-            this.stbConsole});
+            this.tsbConsole});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(533, 25);
@@ -109,6 +109,17 @@
             this.tsbVerifyLanguage.Size = new System.Drawing.Size(96, 22);
             this.tsbVerifyLanguage.Text = "Verify Language";
             this.tsbVerifyLanguage.Click += new System.EventHandler(this.tsbVerifyLanguage_Click);
+            // 
+            // tsbConsole
+            // 
+            this.tsbConsole.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbConsole.Enabled = false;
+            this.tsbConsole.Image = ((System.Drawing.Image)(resources.GetObject("tsbConsole.Image")));
+            this.tsbConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbConsole.Name = "tsbConsole";
+            this.tsbConsole.Size = new System.Drawing.Size(77, 22);
+            this.tsbConsole.Text = "View Output";
+            this.tsbConsole.Click += new System.EventHandler(this.stbConsole_Click);
             // 
             // lblTitle
             // 
@@ -229,16 +240,6 @@
             this.dataGridViewTextBoxColumn1.HeaderText = "Name";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
-            // stbConsole
-            // 
-            this.stbConsole.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stbConsole.Image = ((System.Drawing.Image)(resources.GetObject("stbConsole.Image")));
-            this.stbConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.stbConsole.Name = "stbConsole";
-            this.stbConsole.Size = new System.Drawing.Size(75, 22);
-            this.stbConsole.Text = "View output";
-            this.stbConsole.Click += new System.EventHandler(this.stbConsole_Click);
-            // 
             // FrmRegularGrammar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -285,6 +286,6 @@
         private System.Windows.Forms.ToolStripButton tsbToDFA;
         private System.Windows.Forms.ToolStripButton tsbVerifyMachine;
         private System.Windows.Forms.ToolStripButton tsbVerifyLanguage;
-        private System.Windows.Forms.ToolStripButton stbConsole;
+        private System.Windows.Forms.ToolStripButton tsbConsole;
     }
 }

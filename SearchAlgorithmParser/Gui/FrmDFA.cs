@@ -371,8 +371,7 @@ namespace Gui
             {
                 return;
             }
-<<<<<<< HEAD
-=======
+
             string value = Prompt.ShowDialog("Fill in your text", "Validate language");
 
             if (dfa.Validate(value.ToArray()))
@@ -383,7 +382,6 @@ namespace Gui
             {
                 MessageBox.Show("This string is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
->>>>>>> 0d5ce5992535c0cd8d00cffcab3695222ba0b803
         }
 
     }

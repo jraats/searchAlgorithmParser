@@ -293,6 +293,7 @@ namespace Gui
                 return null;
             }
 
+            tsbConsole.Enabled = true;
             tsbToDFA.Enabled = true;
             tsbToNDFA.Enabled = true;
             tsbVerifyLanguage.Enabled = true;
