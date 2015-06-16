@@ -202,9 +202,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    ndfaString.Append(state + "}, {");
+                    ndfaString.Append(state);
                 }
             }
+
+            ndfaString.Append("}, {");
 
             foreach(S character in this.Alphabet)
             {
@@ -214,11 +216,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    ndfaString.Append(character + "}, ");
+                    ndfaString.Append(character);
                 }
             }
 
-            ndfaString.Append(Delta + ", {");
+            ndfaString.Append("}, " + Delta + ", {");
 
             foreach (T startState in StartStates)
             {
@@ -228,9 +230,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    ndfaString.Append(startState + "}, {");
+                    ndfaString.Append(startState);
                 }
             }
+
+            ndfaString.Append("}, {");
 
             foreach (T endState in this.EndStates)
             {
@@ -240,9 +244,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    ndfaString.Append(endState + "})");
+                    ndfaString.Append(endState);
                 }
             }
+
+            ndfaString.Append("})");
 
             return ndfaString.ToString();
         }

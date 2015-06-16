@@ -137,50 +137,54 @@ namespace SearchAlgorithmParser
         // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET)
         public void And(DFA<T,S> dfa)
         {
+            HashSet<T> oldEndstates = new HashSet<T>(this.EndStates);
             Dictionary<T, Dictionary<S, T>> oldStates = new Dictionary<T,Dictionary<S,T>>(this.states);
             Dictionary<T, Dictionary<S, T>> newStates = new Dictionary<T,Dictionary<S,T>>();
-            Dictionary<SortedSet<T>, Dictionary<S, SortedSet<T>>> newCombinedTransitions = new Dictionary<SortedSet<T>, Dictionary<S, SortedSet<T>>>();
+            Dictionary<List<T>, Dictionary<S, List<T>>> newCombinedTransitions = new Dictionary<List<T>, Dictionary<S, List<T>>>();
 
             this.states = new Dictionary<T,Dictionary<S,T>>();
-            this.StartState = concatStates(new SortedSet<T>(new T[] { this.StartState, dfa.StartState }));
+            this.EndStates.Clear();
+            this.StartState = concatStates(new List<T>(new T[] { this.StartState, dfa.StartState }));
 
             foreach (T transitionFromState in oldStates.Keys)
             {
                 foreach (T secondaryTransitionFromState in dfa.states.Keys)
                 {
-                    SortedSet<T> newFromStateSet = new SortedSet<T>();
+                    List<T> newFromStateSet = new List<T>();
 
                     newFromStateSet.Add(transitionFromState);
                     newFromStateSet.Add(secondaryTransitionFromState);
 
+                    if(oldEndstates.Contains(transitionFromState) && dfa.EndStates.Contains(secondaryTransitionFromState))
+                    {
+                        this.EndStates.Add(concatStates(new List<T>(new T[] { transitionFromState, secondaryTransitionFromState })));
+                    }
                     if(!newCombinedTransitions.ContainsKey(newFromStateSet))
                     {
-                        newCombinedTransitions.Add(newFromStateSet, new Dictionary<S, SortedSet<T>>());
+                        newCombinedTransitions.Add(newFromStateSet, new Dictionary<S, List<T>>());
                     }
                     foreach (S transitionSymbol in oldStates[transitionFromState].Keys)
                     {
-                        SortedSet<T> newToStateSet = new SortedSet<T>();
+                        List<T> newToStateSet = new List<T>();
 
                         newToStateSet.Add(oldStates[transitionFromState][transitionSymbol]);
                         newToStateSet.Add(dfa.states[secondaryTransitionFromState][transitionSymbol]);
 
                         if (!newCombinedTransitions[newFromStateSet].ContainsKey(transitionSymbol))
                         {
-                            newCombinedTransitions[newFromStateSet].Add(transitionSymbol, new SortedSet<T>(newToStateSet));
+                            newCombinedTransitions[newFromStateSet].Add(transitionSymbol, new List<T>(newToStateSet));
                         }
                     }
                 }
             }
 
-            foreach(SortedSet<T> transitionFromState in newCombinedTransitions.Keys)
+            foreach (List<T> transitionFromState in newCombinedTransitions.Keys)
             {
                 foreach(S transitionSymbol in newCombinedTransitions[transitionFromState].Keys)
                 {
                     this.AddTransition(concatStates(transitionFromState), concatStates(newCombinedTransitions[transitionFromState][transitionSymbol]), transitionSymbol);
                 }
             }
-
-            Console.WriteLine("AND combined states: "+newCombinedTransitions.Count);
         }
 
         public void Not()
@@ -203,7 +207,7 @@ namespace SearchAlgorithmParser
             }
         }
 
-        private T concatStates(SortedSet<T> states)
+        private T concatStates(ICollection<T> states)
         {
             dynamic newState = null;
             foreach(T state in states)
@@ -394,9 +398,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    dfaString.Append(state + "}, {");
+                    dfaString.Append(state);
                 }
             }
+
+            dfaString.Append("}, {");
 
             foreach (S character in this.Alphabet)
             {
@@ -406,11 +412,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    dfaString.Append(character + "}, ");
+                    dfaString.Append(character);
                 }
             }
 
-            dfaString.Append(Delta + ", "+this.StartState+", {");
+            dfaString.Append("}, " + Delta + ", "+this.StartState+", {");
 
             foreach (T endState in this.EndStates)
             {
@@ -420,9 +426,11 @@ namespace SearchAlgorithmParser
                 }
                 else
                 {
-                    dfaString.Append(endState + "})");
+                    dfaString.Append(endState);
                 }
             }
+
+            dfaString.Append("})");
 
             return dfaString.ToString();
         }

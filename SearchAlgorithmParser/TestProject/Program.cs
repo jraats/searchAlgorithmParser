@@ -28,34 +28,37 @@ namespace Test_applicatie
             Console.WriteLine(dfa.ToString());
             Console.WriteLine("");
 
+            //dfa.MinimaliseDFA();
+            //dfa.MakePngFile("dfaM.png");
+            //Console.WriteLine(dfa.ToString());
+
+            DFA<String, char> dfa2 = new DFA<String, char>(new char[] { 'a', 'b' }, "LR_X");
+            dfa2.AddTransition("LR_0", "LR_1", 'a');
+            dfa2.AddTransition("LR_0", "LR_2", 'b');
+            dfa2.AddTransition("LR_1", "LR_0", 'a');
+            dfa2.AddTransition("LR_1", "LR_1", 'b');
+            dfa2.AddTransition("LR_2", "LR_0", 'a');
+            dfa2.AddTransition("LR_2", "LR_2", 'b');
+
+            dfa2.StartState = "LR_0";
+            dfa2.EndStates.Add("LR_1");
+            dfa2.EndStates.Add("LR_2");
+
+            dfa2.Not();
+
+            dfa2.MakePngFile("dfa2.png");
+            Console.WriteLine(dfa2.ToString());
+            Console.WriteLine("");
+
+            dfa.And(dfa2);
+
+            dfa.MakePngFile("dfaAnd.png");
+            Console.WriteLine(dfa.ToString());
+            Console.WriteLine("");
+
             dfa.MinimaliseDFA();
             dfa.MakePngFile("dfaM.png");
             Console.WriteLine(dfa.ToString());
-
-            dfa.MinimaliseDFA();
-            dfa.MakePngFile("dfaM2.png");
-            Console.WriteLine(dfa.ToString());
-
-            //DFA<String, char> dfa2 = new DFA<String, char>(new char[] { 'a', 'b' }, "LR_X");
-            //dfa2.AddTransition("LR_0", "LR_1", 'a');
-            //dfa2.AddTransition("LR_0", "LR_2", 'b');
-            //dfa2.AddTransition("LR_1", "LR_0", 'a');
-            //dfa2.AddTransition("LR_1", "LR_1", 'b');
-            //dfa2.AddTransition("LR_2", "LR_0", 'a');
-            //dfa2.AddTransition("LR_2", "LR_2", 'b');
-
-            //dfa2.StartState = "LR_0";
-            //dfa2.EndStates.Add("LR_1");
-            //dfa2.EndStates.Add("LR_2");
-
-            //dfa2.MakePngFile("dfa2.png");
-            //Console.WriteLine(dfa2.ToString());
-            //Console.WriteLine("");
-
-            //dfa.And(dfa2);
-
-            //Console.WriteLine(dfa.ToString());
-            //Console.WriteLine("");
 
             //dfa.Not();
             //dfa.MakePngFile("dfaN.png");
