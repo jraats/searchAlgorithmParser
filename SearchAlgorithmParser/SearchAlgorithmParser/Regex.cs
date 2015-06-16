@@ -29,21 +29,6 @@ namespace SearchAlgorithmParser
             throw new NotImplementedException();
         }
 
-        public override void Or()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void And()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Not()
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool Validate(char[] toBeVerified)
         {
             NDFA<T, char> ndfa = SearchAlgorithmParser.Converter<T, char>.ConvertToNDFA(this, 'e');

@@ -104,17 +104,17 @@ namespace SearchAlgorithmParser
             }
         }
 
-        public override void Or()
+        public void Or()
         {
 
         }
 
-        public override void And()
+        public void And(NDFA<T, S> ndfa)
         {
 
         }
 
-        public override void Not()
+        public void Not()
         {
             Dictionary<T, Dictionary<S, HashSet<T>>> oldStates = new Dictionary<T, Dictionary<S, HashSet<T>>>(this.states);
             HashSet<T> oldEndStates = new HashSet<T>(this.EndStates);

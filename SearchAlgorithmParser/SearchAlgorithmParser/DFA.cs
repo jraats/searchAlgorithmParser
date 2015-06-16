@@ -129,17 +129,61 @@ namespace SearchAlgorithmParser
             ToDFA(Reverse(ToDFA(Reverse(this))));
         }
 
-        public override void Or()
+        public void Or()
         {
 
         }
 
-        public override void And()
+        // CHECK FOR MACHINE COMPATIBILITY (LIKE APLHABET)
+        public void And(DFA<T,S> dfa)
         {
+            Dictionary<T, Dictionary<S, T>> oldStates = new Dictionary<T,Dictionary<S,T>>(this.states);
+            Dictionary<T, Dictionary<S, T>> newStates = new Dictionary<T,Dictionary<S,T>>();
+            Dictionary<SortedSet<T>, Dictionary<S, SortedSet<T>>> newCombinedTransitions = new Dictionary<SortedSet<T>, Dictionary<S, SortedSet<T>>>();
 
+            this.states = new Dictionary<T,Dictionary<S,T>>();
+            this.StartState = concatStates(new SortedSet<T>(new T[] { this.StartState, dfa.StartState }));
+
+            foreach (T transitionFromState in oldStates.Keys)
+            {
+                foreach (T secondaryTransitionFromState in dfa.states.Keys)
+                {
+                    SortedSet<T> newFromStateSet = new SortedSet<T>();
+
+                    newFromStateSet.Add(transitionFromState);
+                    newFromStateSet.Add(secondaryTransitionFromState);
+
+                    if(!newCombinedTransitions.ContainsKey(newFromStateSet))
+                    {
+                        newCombinedTransitions.Add(newFromStateSet, new Dictionary<S, SortedSet<T>>());
+                    }
+                    foreach (S transitionSymbol in oldStates[transitionFromState].Keys)
+                    {
+                        SortedSet<T> newToStateSet = new SortedSet<T>();
+
+                        newToStateSet.Add(oldStates[transitionFromState][transitionSymbol]);
+                        newToStateSet.Add(dfa.states[secondaryTransitionFromState][transitionSymbol]);
+
+                        if (!newCombinedTransitions[newFromStateSet].ContainsKey(transitionSymbol))
+                        {
+                            newCombinedTransitions[newFromStateSet].Add(transitionSymbol, new SortedSet<T>(newToStateSet));
+                        }
+                    }
+                }
+            }
+
+            foreach(SortedSet<T> transitionFromState in newCombinedTransitions.Keys)
+            {
+                foreach(S transitionSymbol in newCombinedTransitions[transitionFromState].Keys)
+                {
+                    this.AddTransition(concatStates(transitionFromState), concatStates(newCombinedTransitions[transitionFromState][transitionSymbol]), transitionSymbol);
+                }
+            }
+
+            Console.WriteLine("AND combined states: "+newCombinedTransitions.Count);
         }
 
-        public override void Not()
+        public void Not()
         {
             Dictionary<T, Dictionary<S, T>> oldStates = new Dictionary<T, Dictionary<S, T>>(this.states);
             HashSet<T> oldEndStates = new HashSet<T>(this.EndStates); 
@@ -172,7 +216,7 @@ namespace SearchAlgorithmParser
         private DFA<T, S> ToDFA(NDFA<T, S> ndfa)
         {
             this.Alphabet = ndfa.Alphabet;
-            states = new Dictionary<T, Dictionary<S, T>>();
+            this.states = new Dictionary<T, Dictionary<S, T>>();
             this.EndStates.Clear();
 
             Stack<SortedSet<T>> combinedStates = new Stack<SortedSet<T>>();
