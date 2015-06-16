@@ -244,7 +244,7 @@ namespace Gui
 
         private DFA<string, char> getDFA()
         {
-            DFA<string, char> dfa = new DFA<string, char>(this.alphabetSource.Cast<char>().ToArray(), "LR_x");
+            DFA<string, char> dfa = new DFA<string, char>(this.alphabetSource.GetTableArray(), "LR_x");
 
             foreach (DataGridViewRow dataRow in this.dgvTransitions.Rows)
             {
@@ -263,8 +263,8 @@ namespace Gui
                     continue;
 
                 string name = dataRow.Cells[0].Value.ToString();
-                bool startState = !((dataRow.Cells[1]).Value == null);
-                bool endState = !((dataRow.Cells[2]).Value == null);
+                bool startState = (((dataRow.Cells[1]).Value == null) ? false : (bool)(dataRow.Cells[1]).Value);
+                bool endState = (((dataRow.Cells[2]).Value == null) ? false : (bool)(dataRow.Cells[2]).Value);
 
                 if (startState)
                 {

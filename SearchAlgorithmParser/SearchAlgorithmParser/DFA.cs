@@ -27,6 +27,14 @@ namespace SearchAlgorithmParser
             this.Trap = trap;
         }
 
+        public override void AddState(T state)
+        {
+            if (!this.states.ContainsKey(state))
+            {
+                this.states.Add(state, new Dictionary<S, T>());
+            }
+        }
+
         public override void AddTransition(T from, T to, S symbol)
         {
             if (!this.states.ContainsKey(from))

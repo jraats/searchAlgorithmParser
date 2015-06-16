@@ -7,18 +7,54 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SearchAlgorithmParser;
+using SearchAlgorithmParser.Regex;
 
 namespace Gui
 {
     public partial class FrmRegularExpression : Form
     {
+        Regex<string> regex;
+
         public FrmRegularExpression()
         {
             InitializeComponent();
+
         }
 
-        private void FrmRegularExpression_Load(object sender, EventArgs e)
+        private void updateGui()
         {
+            if(this.regex != null)
+            {
+                this.lblParsedRegex.Text = regex.ToString();
+            }
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(this.txtRegex.Text))
+                return;
+
+            try
+            {
+                regex = new Regex<string>(new char[] { 'a', 'b' }, this.txtRegex.Text, new StringStateCreater("LR_"));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Regex is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            updateGui();
+        }
+
+        private void tsbToNDFA_Click(object sender, EventArgs e)
+        {
+            if (this.regex != null)
+            {
+                NDFA<string, char> ndfa = SearchAlgorithmParser.Converter<string, char>.ConvertToNDFA(this.regex, 'e');
+                FrmNDFA frmNdfa = new FrmNDFA(ndfa);
+                frmNdfa.MdiParent = this.MdiParent;
+                frmNdfa.Show();
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Gui
         {
             InitializeComponent();
 
-            alphabetSource = new DataTableColumnSource<char>(ref this.dgvAlphabet, 0);
+            alphabetSource = new DataTableColumnSource<char>(ref this.dgvAlphabet, 0, new char[] { 'e' });
             stateSource = new DataTableColumnSource<string>(ref this.dgvStates, 0);
 
             DataGridViewComboBoxColumn column = (DataGridViewComboBoxColumn)this.dgvTransitions.Columns[0];
@@ -186,7 +186,7 @@ namespace Gui
 
         private NDFA<string, char> getNDFA()
         {
-            NDFA<string, char> ndfa = new NDFA<string, char>(this.alphabetSource.Cast<char>().ToArray(), 'e');
+            NDFA<string, char> ndfa = new NDFA<string, char>(this.alphabetSource.GetTableArray(), 'e');
 
             foreach (DataGridViewRow dataRow in this.dgvTransitions.Rows)
             {
@@ -205,8 +205,8 @@ namespace Gui
                     continue;
 
                 string name = dataRow.Cells[0].Value.ToString();
-                bool startState = !((dataRow.Cells[1]).Value == null);
-                bool endState = !((dataRow.Cells[2]).Value == null);
+                bool startState = (((dataRow.Cells[1]).Value == null) ? false : (bool)(dataRow.Cells[1]).Value);
+                bool endState = (((dataRow.Cells[2]).Value == null) ? false : (bool)(dataRow.Cells[2]).Value);
 
                 if (startState)
                 {

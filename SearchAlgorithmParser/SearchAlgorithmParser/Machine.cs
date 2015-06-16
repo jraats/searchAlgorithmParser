@@ -18,6 +18,7 @@ namespace SearchAlgorithmParser
             this.Alphabet = alphabet;
         }
 
+        public abstract void AddState(T state);
         public abstract bool Validate(S[] toBeVerified);
         public abstract Language<S> GetLanguage(int length);
         public abstract bool IsMachineValid();

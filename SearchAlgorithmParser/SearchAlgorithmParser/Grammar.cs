@@ -16,6 +16,14 @@ namespace SearchAlgorithmParser
             this.states = new Dictionary<T, Dictionary<S, HashSet<T>>>();
         }
 
+        public override void AddState(T state)
+        {
+            if (!this.states.ContainsKey(state))
+            {
+                this.states.Add(state, new Dictionary<S, HashSet<T>>());
+            }
+        }
+
         public override HashSet<T> GetStates()
         {
             return new HashSet<T>(states.Keys);

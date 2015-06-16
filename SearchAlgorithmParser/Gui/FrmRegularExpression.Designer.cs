@@ -33,12 +33,10 @@
             this.tsbToNDFA = new System.Windows.Forms.ToolStripButton();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblRegex = new System.Windows.Forms.Label();
-            this.lblResult = new System.Windows.Forms.Label();
-            this.txtTerminal = new System.Windows.Forms.TextBox();
-            this.btnInsertTerminal = new System.Windows.Forms.Button();
-            this.btnPlus = new System.Windows.Forms.Button();
-            this.btnStar = new System.Windows.Forms.Button();
-            this.btnChoice = new System.Windows.Forms.Button();
+            this.txtRegex = new System.Windows.Forms.TextBox();
+            this.btnRun = new System.Windows.Forms.Button();
+            this.lblCurrent = new System.Windows.Forms.Label();
+            this.lblParsedRegex = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +57,7 @@
             this.tsbToNDFA.Name = "tsbToNDFA";
             this.tsbToNDFA.Size = new System.Drawing.Size(75, 22);
             this.tsbToNDFA.Text = "To NDFA";
+            this.tsbToNDFA.Click += new System.EventHandler(this.tsbToNDFA_Click);
             // 
             // lblTitle
             // 
@@ -79,75 +78,55 @@
             this.lblRegex.TabIndex = 5;
             this.lblRegex.Text = "Regular Expression:";
             // 
-            // lblResult
+            // txtRegex
             // 
-            this.lblResult.AutoSize = true;
-            this.lblResult.Location = new System.Drawing.Point(119, 52);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(121, 13);
-            this.lblResult.TabIndex = 6;
-            this.lblResult.Text = "Enter one of the buttons";
+            this.txtRegex.Location = new System.Drawing.Point(119, 49);
+            this.txtRegex.Name = "txtRegex";
+            this.txtRegex.Size = new System.Drawing.Size(197, 20);
+            this.txtRegex.TabIndex = 6;
             // 
-            // txtTerminal
+            // btnRun
             // 
-            this.txtTerminal.Location = new System.Drawing.Point(15, 79);
-            this.txtTerminal.Name = "txtTerminal";
-            this.txtTerminal.Size = new System.Drawing.Size(100, 20);
-            this.txtTerminal.TabIndex = 7;
+            this.btnRun.Location = new System.Drawing.Point(322, 47);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(75, 23);
+            this.btnRun.TabIndex = 7;
+            this.btnRun.Text = "Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
-            // btnInsertTerminal
+            // lblCurrent
             // 
-            this.btnInsertTerminal.Location = new System.Drawing.Point(121, 77);
-            this.btnInsertTerminal.Name = "btnInsertTerminal";
-            this.btnInsertTerminal.Size = new System.Drawing.Size(93, 23);
-            this.btnInsertTerminal.TabIndex = 8;
-            this.btnInsertTerminal.Text = "Insert Terminal";
-            this.btnInsertTerminal.UseVisualStyleBackColor = true;
+            this.lblCurrent.AutoSize = true;
+            this.lblCurrent.Location = new System.Drawing.Point(12, 72);
+            this.lblCurrent.Name = "lblCurrent";
+            this.lblCurrent.Size = new System.Drawing.Size(138, 13);
+            this.lblCurrent.TabIndex = 8;
+            this.lblCurrent.Text = "Current Regular Expression:";
             // 
-            // btnPlus
+            // lblParsedRegex
             // 
-            this.btnPlus.Location = new System.Drawing.Point(15, 106);
-            this.btnPlus.Name = "btnPlus";
-            this.btnPlus.Size = new System.Drawing.Size(75, 23);
-            this.btnPlus.TabIndex = 9;
-            this.btnPlus.Text = "+";
-            this.btnPlus.UseVisualStyleBackColor = true;
-            // 
-            // btnStar
-            // 
-            this.btnStar.Location = new System.Drawing.Point(96, 106);
-            this.btnStar.Name = "btnStar";
-            this.btnStar.Size = new System.Drawing.Size(75, 23);
-            this.btnStar.TabIndex = 10;
-            this.btnStar.Text = "*";
-            this.btnStar.UseVisualStyleBackColor = true;
-            // 
-            // btnChoice
-            // 
-            this.btnChoice.Location = new System.Drawing.Point(178, 105);
-            this.btnChoice.Name = "btnChoice";
-            this.btnChoice.Size = new System.Drawing.Size(75, 23);
-            this.btnChoice.TabIndex = 11;
-            this.btnChoice.Text = "Choice";
-            this.btnChoice.UseVisualStyleBackColor = true;
+            this.lblParsedRegex.AutoSize = true;
+            this.lblParsedRegex.Location = new System.Drawing.Point(12, 85);
+            this.lblParsedRegex.Name = "lblParsedRegex";
+            this.lblParsedRegex.Size = new System.Drawing.Size(79, 13);
+            this.lblParsedRegex.TabIndex = 9;
+            this.lblParsedRegex.Text = "Enter the regex";
             // 
             // FrmRegularExpression
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(541, 261);
-            this.Controls.Add(this.btnChoice);
-            this.Controls.Add(this.btnStar);
-            this.Controls.Add(this.btnPlus);
-            this.Controls.Add(this.btnInsertTerminal);
-            this.Controls.Add(this.txtTerminal);
-            this.Controls.Add(this.lblResult);
+            this.Controls.Add(this.lblParsedRegex);
+            this.Controls.Add(this.lblCurrent);
+            this.Controls.Add(this.btnRun);
+            this.Controls.Add(this.txtRegex);
             this.Controls.Add(this.lblRegex);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FrmRegularExpression";
             this.Text = "Regular Expression";
-            this.Load += new System.EventHandler(this.FrmRegularExpression_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -161,11 +140,9 @@
         private System.Windows.Forms.ToolStripButton tsbToNDFA;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblRegex;
-        private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.TextBox txtTerminal;
-        private System.Windows.Forms.Button btnInsertTerminal;
-        private System.Windows.Forms.Button btnPlus;
-        private System.Windows.Forms.Button btnStar;
-        private System.Windows.Forms.Button btnChoice;
+        private System.Windows.Forms.TextBox txtRegex;
+        private System.Windows.Forms.Button btnRun;
+        private System.Windows.Forms.Label lblCurrent;
+        private System.Windows.Forms.Label lblParsedRegex;
     }
 }
