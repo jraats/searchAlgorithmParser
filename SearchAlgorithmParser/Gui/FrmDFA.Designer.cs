@@ -47,6 +47,9 @@
             this.clnSymbol = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvAlphabet = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tsbToNot = new System.Windows.Forms.ToolStripButton();
+            this.tsbVerifyMachine = new System.Windows.Forms.ToolStripButton();
+            this.tsbVerifyLanguage = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransitions)).BeginInit();
@@ -56,39 +59,50 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbToPng,
+            this.tsbVerifyMachine,
+            this.tsbVerifyLanguage,
             this.tsbToMinimalDFA,
-            this.tsbToRegram});
+            this.tsbToNot,
+            this.tsbToRegram,
+            this.tsbToPng});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(533, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(768, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // tsbToPng
             // 
+            this.tsbToPng.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbToPng.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbToPng.Enabled = false;
             this.tsbToPng.Image = ((System.Drawing.Image)(resources.GetObject("tsbToPng.Image")));
             this.tsbToPng.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToPng.Name = "tsbToPng";
-            this.tsbToPng.Size = new System.Drawing.Size(68, 22);
+            this.tsbToPng.Size = new System.Drawing.Size(52, 22);
             this.tsbToPng.Text = "To PNG";
             this.tsbToPng.Click += new System.EventHandler(this.tsbToPng_Click);
             // 
             // tsbToMinimalDFA
             // 
+            this.tsbToMinimalDFA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbToMinimalDFA.Enabled = false;
             this.tsbToMinimalDFA.Image = ((System.Drawing.Image)(resources.GetObject("tsbToMinimalDFA.Image")));
             this.tsbToMinimalDFA.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToMinimalDFA.Name = "tsbToMinimalDFA";
-            this.tsbToMinimalDFA.Size = new System.Drawing.Size(113, 22);
+            this.tsbToMinimalDFA.Size = new System.Drawing.Size(97, 22);
             this.tsbToMinimalDFA.Text = "To Minimal DFA";
             this.tsbToMinimalDFA.Click += new System.EventHandler(this.tsbToMinimalDFA_Click);
             // 
             // tsbToRegram
             // 
+            this.tsbToRegram.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbToRegram.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbToRegram.Enabled = false;
             this.tsbToRegram.Image = ((System.Drawing.Image)(resources.GetObject("tsbToRegram.Image")));
             this.tsbToRegram.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToRegram.Name = "tsbToRegram";
-            this.tsbToRegram.Size = new System.Drawing.Size(137, 22);
+            this.tsbToRegram.Size = new System.Drawing.Size(121, 22);
             this.tsbToRegram.Text = "To Regular Grammar";
             this.tsbToRegram.Click += new System.EventHandler(this.tsbToRegram_Click);
             // 
@@ -113,7 +127,7 @@
             this.clnEndState});
             this.dgvStates.Location = new System.Drawing.Point(184, 58);
             this.dgvStates.Name = "dgvStates";
-            this.dgvStates.Size = new System.Drawing.Size(349, 82);
+            this.dgvStates.Size = new System.Drawing.Size(584, 82);
             this.dgvStates.TabIndex = 4;
             this.dgvStates.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStates_CellEndEdit);
             this.dgvStates.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStates_UserDeletedRow);
@@ -173,7 +187,7 @@
             this.clnSymbol});
             this.dgvTransitions.Location = new System.Drawing.Point(12, 159);
             this.dgvTransitions.Name = "dgvTransitions";
-            this.dgvTransitions.Size = new System.Drawing.Size(521, 54);
+            this.dgvTransitions.Size = new System.Drawing.Size(756, 313);
             this.dgvTransitions.TabIndex = 7;
             this.dgvTransitions.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvTransitions_DataError);
             // 
@@ -211,11 +225,43 @@
             this.dataGridViewTextBoxColumn1.HeaderText = "Name";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
+            // tsbToNot
+            // 
+            this.tsbToNot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbToNot.Enabled = false;
+            this.tsbToNot.Image = ((System.Drawing.Image)(resources.GetObject("tsbToNot.Image")));
+            this.tsbToNot.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbToNot.Name = "tsbToNot";
+            this.tsbToNot.Size = new System.Drawing.Size(54, 22);
+            this.tsbToNot.Text = "To \'Not\'";
+            this.tsbToNot.Click += new System.EventHandler(this.tsbToNot_Click);
+            // 
+            // tsbVerifyMachine
+            // 
+            this.tsbVerifyMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbVerifyMachine.Image = ((System.Drawing.Image)(resources.GetObject("tsbVerifyMachine.Image")));
+            this.tsbVerifyMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbVerifyMachine.Name = "tsbVerifyMachine";
+            this.tsbVerifyMachine.Size = new System.Drawing.Size(90, 22);
+            this.tsbVerifyMachine.Text = "Verify Machine";
+            this.tsbVerifyMachine.Click += new System.EventHandler(this.tsbVerifyMachine_Click);
+            // 
+            // tsbVerifyLanguage
+            // 
+            this.tsbVerifyLanguage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbVerifyLanguage.Enabled = false;
+            this.tsbVerifyLanguage.Image = ((System.Drawing.Image)(resources.GetObject("tsbVerifyLanguage.Image")));
+            this.tsbVerifyLanguage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbVerifyLanguage.Name = "tsbVerifyLanguage";
+            this.tsbVerifyLanguage.Size = new System.Drawing.Size(96, 22);
+            this.tsbVerifyLanguage.Text = "Verify Language";
+            this.tsbVerifyLanguage.Click += new System.EventHandler(this.tsbVerifyLanguage_Click);
+            // 
             // FrmDFA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 225);
+            this.ClientSize = new System.Drawing.Size(768, 484);
             this.Controls.Add(this.dgvAlphabet);
             this.Controls.Add(this.lblAlpabeth);
             this.Controls.Add(this.lblTitle);
@@ -256,5 +302,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.ToolStripButton tsbToRegram;
         private System.Windows.Forms.ToolStripButton tsbToMinimalDFA;
+        private System.Windows.Forms.ToolStripButton tsbToNot;
+        private System.Windows.Forms.ToolStripButton tsbVerifyMachine;
+        private System.Windows.Forms.ToolStripButton tsbVerifyLanguage;
     }
 }

@@ -52,10 +52,11 @@
             // 
             // tsbToNDFA
             // 
+            this.tsbToNDFA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbToNDFA.Image = ((System.Drawing.Image)(resources.GetObject("tsbToNDFA.Image")));
             this.tsbToNDFA.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToNDFA.Name = "tsbToNDFA";
-            this.tsbToNDFA.Size = new System.Drawing.Size(75, 22);
+            this.tsbToNDFA.Size = new System.Drawing.Size(59, 22);
             this.tsbToNDFA.Text = "To NDFA";
             this.tsbToNDFA.Click += new System.EventHandler(this.tsbToNDFA_Click);
             // 
