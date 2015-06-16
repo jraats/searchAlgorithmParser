@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SearchAlgorithmParser.Regex
 {
-    public abstract class RegularExpressionLoop<T> : RegularExpressionPart<T>
+    public abstract class RegularExpressionLoop<T> : RegularExpressionFunctional<T>
     {
         public const int Unlimited = int.MaxValue;
         public RegularExpressionFunctional<T> block { get; set; }
