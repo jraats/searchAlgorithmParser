@@ -44,9 +44,20 @@ namespace SearchAlgorithmParser
 
         public override bool IsMachineValid()
         {
-            return true;
+            if (this.StartState != null && this.states.Count > 0 && this.Alphabet.Length > 0 && this.EndStates.Count > 0)
+            {
+                // check if symbols are part of alphabet
+                foreach (T fromState in this.states.Keys)
+                {
+                    foreach (S symbol in this.states[fromState].Keys)
+                    {
+                        if (!this.Alphabet.Contains(symbol)) return false;
+                    }
+                }
+                return true;
+            }
+            else return false;
         }
-        
 
         public override string ToString()
         {
