@@ -52,12 +52,6 @@
     <Compile Include="FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmAbstractAutomate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmAbstractAutomate.Designer.cs">
-      <DependentUpon>FrmAbstractAutomate.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmImage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNDFA.resx">
       <DependentUpon>FrmNDFA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRegularExpression.resx">
+      <DependentUpon>FrmRegularExpression.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRegularGrammar.resx">
       <DependentUpon>FrmRegularGrammar.cs</DependentUpon>

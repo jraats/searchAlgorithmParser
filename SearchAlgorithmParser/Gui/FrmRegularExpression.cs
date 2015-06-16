@@ -16,5 +16,9 @@ namespace Gui
         {
             InitializeComponent();
         }
+
+        private void FrmRegularExpression_Load(object sender, EventArgs e)
+        {
+        }
     }
 }

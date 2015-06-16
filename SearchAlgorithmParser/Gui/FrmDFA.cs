@@ -105,6 +105,67 @@ namespace Gui
             }
         }
 
+        public FrmDFA(DFA<string, char> dfa)
+            : this()
+        {
+            foreach (char c in dfa.Alphabet)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells[0].Value = c;
+                this.dgvAlphabet.Rows.Add(row);
+                this.alphabetSource.PosibleChange(ListChangedType.ItemAdded, this.dgvAlphabet.Rows.Count);
+            }
+
+            foreach (string state in dfa.GetStates())
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells.Add(new DataGridViewCheckBoxCell());
+                row.Cells.Add(new DataGridViewCheckBoxCell());
+                row.Cells[0].Value = state.ToString();
+                row.Cells[1].Value = (dfa.StartState.Equals(state));
+                row.Cells[2].Value = dfa.EndStates.Contains(state);
+                this.dgvStates.Rows.Add(row);
+                this.stateSource.PosibleChange(ListChangedType.ItemAdded, this.dgvStates.Rows.Count);
+            }
+
+            foreach (string state in dfa.GetStates())
+            {
+                Dictionary<char, string> toState = dfa.GetStates(state);
+
+                foreach (char key in toState.Keys)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.Cells.Add(new DataGridViewComboBoxCell());
+                    row.Cells.Add(new DataGridViewComboBoxCell());
+                    row.Cells.Add(new DataGridViewComboBoxCell());
+                    this.dgvTransitions.Rows.Add(row);
+
+                    DataGridViewRow tRow = this.dgvTransitions.Rows[this.dgvTransitions.Rows.Count - 2];
+
+                    BindingSource clm1BS = new BindingSource();
+                    clm1BS.DataSource = stateSource;
+
+                    ((DataGridViewComboBoxCell)tRow.Cells[0]).DataSource = clm1BS;
+                    ((DataGridViewComboBoxCell)tRow.Cells[0]).ValueType = typeof(char);
+                    ((DataGridViewComboBoxCell)tRow.Cells[0]).Value = state.ToString();
+
+                    BindingSource clm2BS = new BindingSource();
+                    clm2BS.DataSource = stateSource;
+                    ((DataGridViewComboBoxCell)tRow.Cells[1]).DataSource = clm2BS;
+                    ((DataGridViewComboBoxCell)tRow.Cells[1]).ValueType = typeof(string);
+                    ((DataGridViewComboBoxCell)tRow.Cells[1]).Value = toState[key].ToString();
+
+                    BindingSource clm3BS = new BindingSource();
+                    clm3BS.DataSource = alphabetSource;
+                    ((DataGridViewComboBoxCell)tRow.Cells[2]).DataSource = clm3BS;
+                    ((DataGridViewComboBoxCell)tRow.Cells[2]).ValueType = typeof(char);
+                    ((DataGridViewComboBoxCell)tRow.Cells[2]).Value = key;
+                }
+            }
+        }
+
         private void dgvAlphabet_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             lastDeletedIndex = e.Row.Index;
@@ -183,7 +244,7 @@ namespace Gui
 
         private DFA<string, char> getDFA()
         {
-            DFA<string, char> dfa = new DFA<string, char>(this.alphabetSource.Cast<char>().ToArray());
+            DFA<string, char> dfa = new DFA<string, char>(this.alphabetSource.Cast<char>().ToArray(), "LR_x");
 
             foreach (DataGridViewRow dataRow in this.dgvTransitions.Rows)
             {
@@ -226,7 +287,11 @@ namespace Gui
 
         private void tsbToMinimalDFA_Click(object sender, EventArgs e)
         {
-
+            DFA<string, char> dfa = getDFA();
+            dfa.MinimaliseDFA();
+            FrmDFA frmDfa = new FrmDFA(dfa);
+            frmDfa.MdiParent = this.MdiParent;
+            frmDfa.Show();
         }
 
         private void tsbToRegram_Click(object sender, EventArgs e)
