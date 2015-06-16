@@ -38,18 +38,27 @@ namespace Test_applicatie
 
             // DFA 2
             DFA<String, char> dfa2 = new DFA<String, char>(new char[] { 'a', 'b'}, "LR_X");
-            dfa2.AddTransition("LR_0", "LR_1", 'a');
+            /*dfa2.AddTransition("LR_0", "LR_1", 'a');
             dfa2.AddTransition("LR_0", "LR_2", 'b');
             dfa2.AddTransition("LR_1", "LR_0", 'a');
             dfa2.AddTransition("LR_1", "LR_1", 'b');
             dfa2.AddTransition("LR_2", "LR_0", 'a');
-            dfa2.AddTransition("LR_2", "LR_2", 'b');
+            dfa2.AddTransition("LR_2", "LR_2", 'b');*/
+            dfa2.AddTransition("LR_0", "LR_1", 'a');
+            dfa2.AddTransition("LR_0", "LR_X", 'b');
+            dfa2.AddTransition("LR_1", "LR_X", 'a');
+            dfa2.AddTransition("LR_1", "LR_2", 'b');
+            dfa2.AddTransition("LR_2", "LR_3", 'a');
+            dfa2.AddTransition("LR_2", "LR_X", 'b');
+            dfa2.AddTransition("LR_3", "LR_3", 'a');
+            dfa2.AddTransition("LR_3", "LR_3", 'b');
+            dfa2.AddTransition("LR_X", "LR_X", 'a');
+            dfa2.AddTransition("LR_X", "LR_X", 'b');
 
             dfa2.StartState = "LR_0";
-            dfa2.EndStates.Add("LR_1");
-            dfa2.EndStates.Add("LR_2");
+            dfa2.EndStates.Add("LR_3");
 
-            dfa2.Not();
+            //dfa2.Not();
 
             dfa2.MakePngFile("dfa2.png");
             Console.WriteLine(dfa2.ToString());
