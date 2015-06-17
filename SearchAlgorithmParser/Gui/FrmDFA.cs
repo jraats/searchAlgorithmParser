@@ -284,7 +284,7 @@ namespace Gui
 
             tsbVerifyLanguage.Enabled = true;
             tsbToMinimalDFA.Enabled = true;
-            tsbToNot.Enabled = true;
+            //tsbToNot.Enabled = true;
             tsbToPng.Enabled = true;
             tsbToRegram.Enabled = true;
             return dfa;

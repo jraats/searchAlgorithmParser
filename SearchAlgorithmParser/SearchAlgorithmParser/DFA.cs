@@ -157,6 +157,7 @@ namespace SearchAlgorithmParser
                 MergeOperation(dfa, OperationType.OR);
                 return true;
             }
+            Console.WriteLine("ERROR");
             return false;
         }
 
@@ -167,6 +168,7 @@ namespace SearchAlgorithmParser
                 MergeOperation(dfa, OperationType.AND);
                 return true;
             }
+            Console.WriteLine("ERROR");
             return false;
         }
 
